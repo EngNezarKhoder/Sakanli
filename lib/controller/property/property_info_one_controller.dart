@@ -14,6 +14,7 @@ abstract class PropertyInfoOneController extends GetxController {
   void addToilet();
   void removeToilet();
   void setDate(DateTime date);
+  bool validatePageFields();
 }
 
 class PropertyInfoOneControllerImp extends PropertyInfoOneController {
@@ -37,6 +38,12 @@ class PropertyInfoOneControllerImp extends PropertyInfoOneController {
   late DateTime selectedDate;
   late TextEditingController detailsController;
   RxInt textLength = 0.obs;
+  late GlobalKey<FormState> formState;
+
+  late bool requiredService;
+  late bool requiredAdvertiserType;
+  late bool requiredPropertyArea;
+  late bool status;
 
   @override
   void onInit() {
@@ -48,10 +55,15 @@ class PropertyInfoOneControllerImp extends PropertyInfoOneController {
     priceRentDaily = TextEditingController();
     myDate = TextEditingController();
     detailsController = TextEditingController();
+    formState = GlobalKey<FormState>();
     countBedRoom = 0;
     countPathRoom = 0;
     countToilet = 0;
     selectedDate = DateTime.now();
+    requiredService = false;
+    requiredAdvertiserType = false;
+    requiredPropertyArea = false;
+    status = false;
     propertyTypes = [
       'اخرى',
       'اسهم',
@@ -204,5 +216,28 @@ class PropertyInfoOneControllerImp extends PropertyInfoOneController {
     myDate.text =
         "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
     update();
+  }
+
+  @override
+  bool validatePageFields() {
+    for (int i = 0; i < serviceInfo.length; i++) {
+      if (serviceInfo[i]['status'] == true) {
+        requiredService = true;
+        break;
+      }
+    }
+    if (advertiserType != '') {
+      requiredAdvertiserType = true;
+    }
+    if (propertyArea.text != '') {
+      requiredPropertyArea = true;
+    }
+    if (formState.currentState!.validate() &&
+        requiredAdvertiserType &&
+        requiredPropertyArea &&
+        requiredService) {
+      status = true;
+    }
+    return status;
   }
 }

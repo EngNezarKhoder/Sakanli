@@ -41,7 +41,7 @@ class MyTextFormProperty extends StatelessWidget {
           borderSide: BorderSide(color: AppColor.redColor, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         fillColor: AppColor.thirdColor,
         filled: true,
         hint: Text(hintText, style: TextTheme.of(context).bodySmall),
