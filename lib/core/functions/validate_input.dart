@@ -6,11 +6,11 @@ String? validateInput(String val, int min, int max, String type) {
       return "الرجاء إدخال بريد إلكتروني صالح";
     }
   }
-  if (type == "username") {
-    if (!GetUtils.isUsername(val)) {
-      return "الرجاء إدخال اسم مستخدم صالح";
-    }
-  }
+  // if (type == "username") {
+  //   if (!GetUtils.isUsername(val)) {
+  //     return "الرجاء إدخال اسم مستخدم صالح";
+  //   }
+  // }
   if (type == "phone") {
     if (!GetUtils.isPhoneNumber(val)) {
       return "الرجاء إدخال رقم هاتف صالح";
