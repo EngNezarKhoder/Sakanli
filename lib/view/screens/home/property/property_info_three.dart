@@ -18,96 +18,99 @@ class PropertyInfoThree extends StatelessWidget {
     PropertyInfoThreeControllerImp controller = Get.put(
       PropertyInfoThreeControllerImp(),
     );
-    return Container(
-      child: ListView(
-        children: [
-          Text(
-            "الصور أفقية الاتجاه للحصول على أفضل نتيجة",
-            style: TextTheme.of(
-              context,
-            ).bodySmall!.copyWith(color: AppColor.greyColor),
-          ),
-          const SizedBox(height: 10),
-          GetBuilder<PropertyInfoThreeControllerImp>(
-            builder: (controller) {
-              return controller.imageFiles.isEmpty
-                  ? AddImageBox(
-                      onTap: () {
-                        showCustomDialog(
-                          context,
-                          onTapCamera: controller.uploadImageFromCamera,
-                          onTapGallery: controller.uploadImageFromGallery,
-                        );
-                      },
-                    )
-                  : Column(
-                      children: [
-                        InfoImageBox(
-                          countSelectedImages: controller.imageFiles.length,
-                          onPressed: () {
-                            controller.clearAllImages();
-                          },
-                          totalSize: controller.getTotalSizeOfImagesByMB(),
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 100,
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 3
-                                ),
-                            itemCount: controller.imageFiles.length,
-                            itemBuilder: (context, index) {
-                              return ImageContainer(
-                                file: controller.imageFiles[index],
-                                onTap: () {
-                                  controller.removeImage(index);
-                                },
+    return Form(
+      key: controller.formState,
+      child: Container(
+        child: ListView(
+          children: [
+            Text(
+              "الصور أفقية الاتجاه للحصول على أفضل نتيجة",
+              style: TextTheme.of(
+                context,
+              ).bodySmall!.copyWith(color: AppColor.greyColor),
+            ),
+            const SizedBox(height: 10),
+            GetBuilder<PropertyInfoThreeControllerImp>(
+              builder: (controller) {
+                return controller.imageFiles.isEmpty
+                    ? AddImageBox(
+                        onTap: () {
+                          showCustomDialog(
+                            context,
+                            onTapCamera: controller.uploadImageFromCamera,
+                            onTapGallery: controller.uploadImageFromGallery,
+                          );
+                        },
+                      )
+                    : Column(
+                        children: [
+                          InfoImageBox(
+                            countSelectedImages: controller.imageFiles.length,
+                            onPressed: () {
+                              controller.clearAllImages();
+                            },
+                            totalSize: controller.getTotalSizeOfImagesByMB(),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 100,
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 3
+                                  ),
+                              itemCount: controller.imageFiles.length,
+                              itemBuilder: (context, index) {
+                                return ImageContainer(
+                                  file: controller.imageFiles[index],
+                                  onTap: () {
+                                    controller.removeImage(index);
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          AddImageBox(
+                            onTap: () {
+                              showCustomDialog(
+                                context,
+                                onTapCamera: controller.uploadImageFromCamera,
+                                onTapGallery: controller.uploadImageFromGallery,
                               );
                             },
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        AddImageBox(
-                          onTap: () {
-                            showCustomDialog(
-                              context,
-                              onTapCamera: controller.uploadImageFromCamera,
-                              onTapGallery: controller.uploadImageFromGallery,
-                            );
-                          },
-                        ),
-                      ],
-                    );
-            },
-          ),
-          const SizedBox(height: 20),
-          RichTextWidget(title: 'رقم التواصل عبر المكالمات '),
-          const SizedBox(height: 10),
-          MyTextFormProperty(
-            keyboardType: TextInputType.phone,
-            validator: (val) {
-              return validateInput(val!, 10, 100, 'phone');
-            },
-            myController: controller.phoneCalls,
-            hintText: 'رقم الهاتف',
-          ),
-          const SizedBox(height: 20),
-          RichTextWidget(title: 'رقم التواصل عبر الواتساب '),
-          const SizedBox(height: 10),
-          MyTextFormProperty(
-            keyboardType: TextInputType.phone,
-            validator: (val) {
-              return validateInput(val!, 10, 100, 'phone');
-            },
-            myController: controller.phoneWhatsApp,
-            hintText: 'رقم الواتساب',
-          ),
-        ],
+                        ],
+                      );
+              },
+            ),
+            const SizedBox(height: 20),
+            RichTextWidget(title: 'رقم التواصل عبر المكالمات '),
+            const SizedBox(height: 10),
+            MyTextFormProperty(
+              keyboardType: TextInputType.phone,
+              validator: (val) {
+                return validateInput(val!, 10, 100, 'phone');
+              },
+              myController: controller.phoneCalls,
+              hintText: 'رقم الهاتف',
+            ),
+            const SizedBox(height: 20),
+            RichTextWidget(title: 'رقم التواصل عبر الواتساب '),
+            const SizedBox(height: 10),
+            MyTextFormProperty(
+              keyboardType: TextInputType.phone,
+              validator: (val) {
+                return validateInput(val!, 10, 100, 'phone');
+              },
+              myController: controller.phoneWhatsApp,
+              hintText: 'رقم الواتساب',
+            ),
+          ],
+        ),
       ),
     );
   }

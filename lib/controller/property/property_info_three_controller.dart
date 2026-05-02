@@ -11,17 +11,20 @@ abstract class PropertyInfoThreeController extends GetxController {
   void clearAllImages();
   void removeImage(int index);
   double getTotalSizeOfImagesByMB();
+  bool validateFields();
 }
 
 class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
   late TextEditingController phoneCalls;
   late TextEditingController phoneWhatsApp;
+  late GlobalKey<FormState> formState;
   List<File> imageFiles = [];
   static const maxImages = 3;
   static const maxImageSize = 1 * 1024 * 1024;
 
   @override
   void onInit() {
+    formState = GlobalKey<FormState>();
     phoneCalls = TextEditingController();
     phoneWhatsApp = TextEditingController();
     super.onInit();
@@ -30,13 +33,13 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
   @override
   void uploadImageFromCamera() async {
     Get.back();
+    XFile? cameraFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+    );
     if (imageFiles.length >= maxImages) {
       showWarningDialog("تنبيه", "الحد الأقصى 3 صور فقط");
       return;
     }
-    XFile? cameraFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-    );
     if (cameraFile != null) {
       if (File(cameraFile.path).lengthSync() > maxImageSize) {
         showWarningDialog('تنبيه', 'لا يمكن رفع صورة حجمها اكبر من 1 ميغا');
@@ -86,5 +89,13 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
       totalBytes += file.lengthSync();
     }
     return double.parse((totalBytes / (1024 * 1024)).toStringAsFixed(1));
+  }
+
+  @override
+  bool validateFields() {
+    if (!formState.currentState!.validate() || imageFiles.isEmpty) {
+      return false;
+    }
+    return true;
   }
 }

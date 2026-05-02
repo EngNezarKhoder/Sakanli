@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/property/property_info_one_controller.dart';
+import 'package:sakanle/controller/property/property_info_three_controller.dart';
 import 'package:sakanle/controller/property/property_info_two_controller.dart';
+import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_success_message.dart';
 import 'package:sakanle/view/screens/home/property/property_info_one.dart';
 import 'package:sakanle/view/screens/home/property/property_info_three.dart';
 import 'package:sakanle/view/screens/home/property/property_info_two.dart';
@@ -36,7 +39,7 @@ class PropertyInfoControllerImp extends PropertyInfoController {
   }
 
   @override
-  void navigateToNextPage() {
+  void navigateToNextPage() async {
     if (index == 0) {
       PropertyInfoOneControllerImp controllerOne =
           Get.find<PropertyInfoOneControllerImp>();
@@ -69,6 +72,24 @@ class PropertyInfoControllerImp extends PropertyInfoController {
       } else {
         pageTwoIsDone = true;
         update();
+      }
+    }
+    if (index == 2) {
+      PropertyInfoThreeControllerImp controllerThree =
+          Get.find<PropertyInfoThreeControllerImp>();
+      if (!controllerThree.validateFields()) {
+        Get.snackbar(
+          "تنبيه",
+          "يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      } else {
+        showSuccessMessage();
+        await Future.delayed(Duration(seconds: 3));
+        Get.offAllNamed(AppRoute.homePage);
       }
     }
     if (index < 2) {
