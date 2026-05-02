@@ -11,13 +11,16 @@ void showSuccessMessage() {
     backgroundColor: Color(0xFF1E1E2C),
     colorText: Colors.white,
     duration: Duration(seconds: 4),
-    icon: Container(
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.green.withValues(alpha: 0.15),
-        shape: BoxShape.circle,
+    icon: Padding(
+      padding: EdgeInsets.only(right: 8),
+      child: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.green.withValues(alpha: 0.15),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.check, color: Colors.green, size: 26),
       ),
-      child: Icon(Icons.check, color: Colors.green, size: 26),
     ),
     shouldIconPulse: false,
     boxShadows: [

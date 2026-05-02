@@ -33,20 +33,24 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
   @override
   void uploadImageFromCamera() async {
     Get.back();
-    XFile? cameraFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-    );
-    if (imageFiles.length >= maxImages) {
-      showWarningDialog("تنبيه", "الحد الأقصى 3 صور فقط");
-      return;
-    }
-    if (cameraFile != null) {
-      if (File(cameraFile.path).lengthSync() > maxImageSize) {
-        showWarningDialog('تنبيه', 'لا يمكن رفع صورة حجمها اكبر من 1 ميغا');
+    try {
+      XFile? cameraFile = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+      );
+      if (imageFiles.length >= maxImages) {
+        showWarningDialog("تنبيه", "الحد الأقصى 3 صور فقط");
         return;
       }
-      imageFiles.add(File(cameraFile.path));
-      update();
+      if (cameraFile != null) {
+        if (File(cameraFile.path).lengthSync() > maxImageSize) {
+          showWarningDialog('تنبيه', 'لا يمكن رفع صورة حجمها اكبر من 1 ميغا');
+          return;
+        }
+        imageFiles.add(File(cameraFile.path));
+        update();
+      }
+    } catch (e) {
+      //
     }
   }
 
