@@ -10,6 +10,7 @@ import 'package:sakanle/view/screens/home/favorite_page.dart';
 import 'package:sakanle/view/screens/home/filter/service.dart';
 import 'package:sakanle/view/screens/home/filter/where.dart';
 import 'package:sakanle/view/screens/home/home_page.dart';
+import 'package:sakanle/view/screens/home/map/map_screen.dart';
 import 'package:sakanle/view/screens/home/map_page.dart';
 import 'package:sakanle/view/screens/home/property/add_property.dart';
 import 'package:sakanle/view/screens/home/property/advice_page.dart';
@@ -40,4 +41,5 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(name: AppRoute.propertyInfoTwo, page: () => PropertyInfoTwo()),
   GetPage(name: AppRoute.propertyInfoThree, page: () => PropertyInfoThree()),
   GetPage(name: AppRoute.propertyInfo, page: () => PropertyInfo()),
+  GetPage(name: AppRoute.mapScreen, page: () => MapScreen()),
 ];

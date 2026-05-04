@@ -5,6 +5,7 @@ import 'package:sakanle/controller/property/property_info_three_controller.dart'
 import 'package:sakanle/controller/property/property_info_two_controller.dart';
 import 'package:sakanle/core/constant/app_route.dart';
 import 'package:sakanle/core/functions/show_success_message.dart';
+import 'package:sakanle/core/functions/show_warning_dialog.dart';
 import 'package:sakanle/view/screens/home/property/property_info_one.dart';
 import 'package:sakanle/view/screens/home/property/property_info_three.dart';
 import 'package:sakanle/view/screens/home/property/property_info_two.dart';
@@ -60,14 +61,15 @@ class PropertyInfoControllerImp extends PropertyInfoController {
     if (index == 1) {
       PropertyInfoTwoControllerImp controllerTwo =
           Get.find<PropertyInfoTwoControllerImp>();
-      if (!controllerTwo.validateFields()) {
-        Get.snackbar(
+      String message = controllerTwo.validateFields();
+      if (message == "fieldsError") {
+        showWarningDialog(
           "تنبيه",
           "يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
         );
+        return;
+      } else if (message == "addError") {
+        showWarningDialog("تنبيه", "يرجى تحديد موقع العقار على الخريطة");
         return;
       } else {
         pageTwoIsDone = true;

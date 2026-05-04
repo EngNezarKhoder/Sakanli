@@ -19,4 +19,5 @@ class AppRoute {
   static const String propertyInfoOne = "/propertyInfoOne";
   static const String propertyInfoTwo = "/propertyInfoTwo";
   static const String propertyInfoThree = "/propertyInfoThree";
+  static const String mapScreen = "/mapScreen";
 }

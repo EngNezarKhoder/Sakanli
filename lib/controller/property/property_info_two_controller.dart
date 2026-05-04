@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_open_location.dart';
 
 abstract class PropertyInfoTwoController extends GetxController {
   void onChangeMyCity(String city);
-  bool validateFields();
+  String validateFields();
+  Future<bool> handleLocationPermission();
+  void onTapAddLocation();
 }
 
 class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
@@ -15,6 +21,9 @@ class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
   late TextEditingController building;
   late TextEditingController propertyId;
   late GlobalKey<FormState> formState;
+  double lat = 0.0;
+  double lng = 0.0;
+  String address = "";
 
   @override
   void onInit() {
@@ -50,10 +59,46 @@ class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
   }
 
   @override
-  bool validateFields() {
-    if (formState.currentState!.validate()) {
-      return true;
+  String validateFields() {
+    if (address == "") {
+      return "addError";
     }
-    return false;
+    if (!formState.currentState!.validate()) {
+      return "fieldsError";
+    }
+    return "ok";
+  }
+
+  Future<bool> handleLocationPermission() async {
+    var status = await Permission.location.request();
+    if (!status.isGranted) return false;
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      showOpenLocation(
+        onPressedCancel: () {
+          Get.back();
+        },
+        onPressedConfirm: () async {
+          Get.back();
+          await Geolocator.openLocationSettings();
+        },
+      );
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  void onTapAddLocation() async {
+    bool hasPermission = await handleLocationPermission();
+    if (hasPermission) {
+      var result = await Get.toNamed(AppRoute.mapScreen);
+      if (result != null) {
+        lat = result['lat'];
+        lng = result['lng'];
+        address = result['address'];
+        update();
+      }
+    }
   }
 }
