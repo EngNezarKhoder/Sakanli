@@ -8,7 +8,6 @@ import 'package:sakanle/core/constant/app_route.dart';
 import 'package:sakanle/core/functions/show_message.dart';
 import 'package:sakanle/core/functions/show_open_location.dart';
 
-
 abstract class MapPageController extends GetxController {
   void getCurrentCenter();
   void changeStatusOfCityButton(int index);
@@ -40,6 +39,7 @@ class MapPageControllerImp extends MapPageController {
     initialZoom.value = 6.26;
     foundedResults = [];
     selectedCity = "";
+    selectedService = "";
     cites = [
       "إدلب",
       "حماة",
