@@ -15,7 +15,6 @@ void showOpenLocation({
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // handle bar
           Container(
             width: 45,
             height: 5,
@@ -25,17 +24,16 @@ void showOpenLocation({
             ),
           ),
           const SizedBox(height: 20),
-          // icon (soft style)
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.08),
+              color: const Color(0xFFFF8A00).withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.location_on_rounded,
               size: 40,
-              color: Colors.blueAccent,
+              color: Color(0xFFFF8A00),
             ),
           ),
           const SizedBox(height: 18),
@@ -43,19 +41,15 @@ void showOpenLocation({
             "تفعيل الموقع",
             style: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF0D0700),
             ),
           ),
           const SizedBox(height: 10),
           Text(
             "نحتاج الوصول إلى موقعك لتحديد العقار بدقة وعرضه على الخريطة",
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              height: 1.4,
-              fontSize: 13,
-            ),
+            style: TextStyle(color: Colors.black54, height: 1.5, fontSize: 13),
           ),
           const SizedBox(height: 25),
           Row(
@@ -64,15 +58,18 @@ void showOpenLocation({
                 child: OutlinedButton(
                   onPressed: () => onPressedCancel?.call(),
                   style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                     ),
-                    side: BorderSide(color: Colors.grey.shade300),
+                    side: const BorderSide(color: Color(0xFFFF8A00)),
                   ),
                   child: const Text(
                     "لاحقاً",
-                    style: TextStyle(color: Colors.black87),
+                    style: TextStyle(
+                      color: Color(0xFF0D0700),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -81,16 +78,19 @@ void showOpenLocation({
                 child: ElevatedButton(
                   onPressed: () => onPressedConfirm?.call(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2563EB), // modern blue
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    backgroundColor: const Color(0xFFFF8A00),
+                    padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(14),
                     ),
                     elevation: 0,
                   ),
                   child: const Text(
                     "تفعيل",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Color(0xFF0D0700),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

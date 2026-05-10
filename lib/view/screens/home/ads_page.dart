@@ -15,6 +15,7 @@ class AdsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AdsPageControllerImp controller = Get.put(AdsPageControllerImp());
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: ListView(
         children: [
           Row(

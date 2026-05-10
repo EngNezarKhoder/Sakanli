@@ -52,7 +52,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: controller.pages[controller.index],
         ),
       );
