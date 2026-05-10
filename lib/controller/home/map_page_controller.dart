@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_filter_sheet.dart';
 import 'package:sakanle/core/functions/show_message.dart';
 import 'package:sakanle/core/functions/show_open_location.dart';
 
@@ -18,6 +19,7 @@ abstract class MapPageController extends GetxController {
   void navigateToAddProperty();
   void getCurrentLocation();
   Future<bool> handleLocationPermission();
+  void showFilterSheet();
 }
 
 class MapPageControllerImp extends MapPageController {
@@ -31,6 +33,7 @@ class MapPageControllerImp extends MapPageController {
   late List<Map<String, dynamic>> foundedResults;
   late String selectedCity;
   late String selectedService;
+  RxBool filterEnabled = false.obs;
 
   @override
   void onInit() {
@@ -214,5 +217,13 @@ class MapPageControllerImp extends MapPageController {
     latlng.LatLng center = latlng.LatLng(position.latitude, position.longitude);
     mapController.move(center, 16);
     showMessage();
+  }
+
+  @override
+  void showFilterSheet() async {
+    var result = await showFilterBottomSheet();
+    if (result != null) {
+      filterEnabled.value = result['filterEnabled'];
+    }
   }
 }

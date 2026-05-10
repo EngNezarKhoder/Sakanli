@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sakanle/controller/home/map_page_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
+import 'package:sakanle/view/widgets/home/map/filter_container.dart';
 import 'package:sakanle/view/widgets/home/map/my_button_location.dart';
 import 'package:sakanle/view/widgets/home/map/widget_extensions.dart';
 import 'package:sakanle/view/widgets/home/map/widget_results.dart';
@@ -70,32 +71,45 @@ class MapPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    right: 20,
-                    top: 90,
-                    left: 0,
-                    child: SizedBox(
-                      height: 35,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.services.length,
-                        itemBuilder: (context, index) {
-                          return GetBuilder<MapPageControllerImp>(
-                            builder: (controller) {
-                              return MyButtonLocation(
-                                isPressed: controller.servicesStatus[index],
-                                onPressed: () {
-                                  controller.changeStatusOfSErviceButton(index);
-                                  controller.changeOfSelectedService(
-                                    controller.services[index],
-                                  );
-                                  controller.showResults();
-                                },
-                                title: controller.services[index],
-                              );
-                            },
-                          );
-                        },
+                  Obx(
+                    () => controller.filterEnabled.value
+                        ? Positioned(
+                            right: 15,
+                            top: 93,
+                            child: FilterContainer(),
+                          )
+                        : SizedBox(),
+                  ),
+                  Obx(
+                    () => Positioned(
+                      right: controller.filterEnabled.value ? 100 : 15,
+                      top: 90,
+                      left: 0,
+                      child: SizedBox(
+                        height: 35,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: controller.services.length,
+                          itemBuilder: (context, index) {
+                            return GetBuilder<MapPageControllerImp>(
+                              builder: (controller) {
+                                return MyButtonLocation(
+                                  isPressed: controller.servicesStatus[index],
+                                  onPressed: () {
+                                    controller.changeStatusOfSErviceButton(
+                                      index,
+                                    );
+                                    controller.changeOfSelectedService(
+                                      controller.services[index],
+                                    );
+                                    controller.showResults();
+                                  },
+                                  title: controller.services[index],
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -123,6 +137,16 @@ class MapPage extends StatelessWidget {
                         controller.navigateToAddProperty();
                       },
                       icon: FontAwesomeIcons.store,
+                    ),
+                  ),
+                  Positioned(
+                    top: 135,
+                    right: 20,
+                    child: WidgetExtensions(
+                      onTap: () {
+                        controller.showFilterSheet();
+                      },
+                      icon: FontAwesomeIcons.filter,
                     ),
                   ),
                   Positioned(
