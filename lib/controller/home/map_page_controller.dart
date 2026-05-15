@@ -20,6 +20,7 @@ abstract class MapPageController extends GetxController {
   void getCurrentLocation();
   Future<bool> handleLocationPermission();
   void showFilterSheet();
+  void navigateToResultsPage();
 }
 
 class MapPageControllerImp extends MapPageController {
@@ -150,27 +151,31 @@ class MapPageControllerImp extends MapPageController {
   void showResults() {
     switch (selectedService) {
       case 'الكل':
-        foundedResults = [
-          {"name": "حمص"},
-        ];
+        if (selectedCity != '')
+          foundedResults = [
+            {"name": "حمص"},
+          ];
         break;
       case 'للبيع':
-        foundedResults = [
-          {"name": "حمص"},
-        ];
+        if (selectedCity != '')
+          foundedResults = [
+            {"name": "حمص"},
+          ];
         break;
       case 'للإيجار السنوي':
-        foundedResults = [
-          {"name": "حمص"},
-        ];
+        if (selectedCity != '')
+          foundedResults = [
+            {"name": "حمص"},
+          ];
         break;
       case 'للإيجار - شهري':
-        foundedResults = [
-          {"name": "حمص"},
-        ];
+        if (selectedCity != '')
+          foundedResults = [
+            {"name": "حمص"},
+          ];
         break;
       case 'للإيجار - يومي':
-        foundedResults = [];
+        if (selectedCity != '') foundedResults = [];
         break;
     }
     update();
@@ -225,5 +230,17 @@ class MapPageControllerImp extends MapPageController {
     if (result != null) {
       filterEnabled.value = result['filterEnabled'];
     }
+  }
+
+  @override
+  void navigateToResultsPage() {
+    Get.toNamed(
+      AppRoute.foundedResults,
+      arguments: {
+        "city": selectedCity,
+        "service": selectedService,
+        "countOfPropertyFounded": foundedResults.length,
+      },
+    );
   }
 }

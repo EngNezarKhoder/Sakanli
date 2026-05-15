@@ -4,8 +4,8 @@ import 'package:sakanle/controller/property/add_property_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
 import 'package:sakanle/view/widgets/auth/my_custom_button_auth.dart';
-import 'package:sakanle/view/widgets/home/property/add_property_widget.dart';
-import 'package:sakanle/view/widgets/home/property/advice_widget.dart';
+import 'package:sakanle/view/widgets/home/property/add_property_widgets/add_property_widget.dart';
+import 'package:sakanle/view/widgets/home/property/advice/advice_widget.dart';
 
 class AddProperty extends StatelessWidget {
   const AddProperty({super.key});

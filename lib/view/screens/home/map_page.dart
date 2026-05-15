@@ -124,7 +124,9 @@ class MapPage extends StatelessWidget {
                               child: WidgetResults(
                                 countOfProperties:
                                     controller.foundedResults.length,
-                                onTap: () {},
+                                onTap: () {
+                                  controller.navigateToResultsPage();
+                                },
                               ),
                             );
                     },

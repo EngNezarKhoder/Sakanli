@@ -1,10 +1,17 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:sakanle/bindings/auth/login_bindings.dart';
+import 'package:sakanle/bindings/auth/reset_password/reset_password.dart';
+import 'package:sakanle/bindings/auth/reset_password/verified_code.dart';
+import 'package:sakanle/bindings/auth/reset_password/verified_email.dart';
+import 'package:sakanle/bindings/auth/sign_up_bindings.dart';
+import 'package:sakanle/bindings/auth/verified_code_sign_up_bindings.dart';
 import 'package:sakanle/core/constant/app_route.dart';
 import 'package:sakanle/view/screens/auth/forgetpassword/reset_password.dart';
 import 'package:sakanle/view/screens/auth/forgetpassword/verified_code.dart';
 import 'package:sakanle/view/screens/auth/forgetpassword/verified_email.dart';
 import 'package:sakanle/view/screens/auth/login.dart';
 import 'package:sakanle/view/screens/auth/sign_up.dart';
+import 'package:sakanle/view/screens/auth/verified_code_sign_up.dart';
 import 'package:sakanle/view/screens/home/ads_page.dart';
 import 'package:sakanle/view/screens/home/favorite_page.dart';
 import 'package:sakanle/view/screens/home/filter/service.dart';
@@ -14,6 +21,8 @@ import 'package:sakanle/view/screens/home/map/map_screen.dart';
 import 'package:sakanle/view/screens/home/map_page.dart';
 import 'package:sakanle/view/screens/home/property/add_property.dart';
 import 'package:sakanle/view/screens/home/property/advice_page.dart';
+import 'package:sakanle/view/screens/home/property/founded_results.dart';
+import 'package:sakanle/view/screens/home/property/property_details.dart';
 import 'package:sakanle/view/screens/home/property/property_info.dart';
 import 'package:sakanle/view/screens/home/property/property_info_one.dart';
 import 'package:sakanle/view/screens/home/property/property_info_three.dart';
@@ -22,11 +31,32 @@ import 'package:sakanle/view/screens/home/settings_page.dart';
 
 List<GetPage<dynamic>>? getPages = [
   // Auth
-  GetPage(name: AppRoute.login, page: () => Login()),
-  GetPage(name: AppRoute.verifiedEmail, page: () => VerifiedEmail()),
-  GetPage(name: AppRoute.signUp, page: () => SignUp()),
-  GetPage(name: AppRoute.resetPassword, page: () => ResetPassword()),
-  GetPage(name: AppRoute.verifiedCode, page: () => VerifiedCode()),
+  GetPage(name: AppRoute.login, page: () => Login(), binding: LoginBindings()),
+  GetPage(
+    name: AppRoute.verifiedEmail,
+    page: () => VerifiedEmail(),
+    binding: VerifiedEmailBindings(),
+  ),
+  GetPage(
+    name: AppRoute.signUp,
+    page: () => SignUp(),
+    binding: SignUpBindings(),
+  ),
+  GetPage(
+    name: AppRoute.verifiedCodeSignUp,
+    page: () => VerifiedCodeSignUp(),
+    binding: VerifiedCodeSignUpBindings(),
+  ),
+  GetPage(
+    name: AppRoute.resetPassword,
+    page: () => ResetPassword(),
+    binding: ResetPasswordBindings(),
+  ),
+  GetPage(
+    name: AppRoute.verifiedCode,
+    page: () => VerifiedCode(),
+    binding: VerifiedCodeBindings(),
+  ),
   // Home Pages
   GetPage(name: AppRoute.homePage, page: () => HomePage()),
   GetPage(name: AppRoute.adsPage, page: () => AdsPage()),
@@ -42,4 +72,6 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(name: AppRoute.propertyInfoThree, page: () => PropertyInfoThree()),
   GetPage(name: AppRoute.propertyInfo, page: () => PropertyInfo()),
   GetPage(name: AppRoute.mapScreen, page: () => MapScreen()),
+  GetPage(name: AppRoute.foundedResults, page: () => FoundedResults()),
+  GetPage(name: AppRoute.propertyDetails, page: () => PropertyDetails()),
 ];

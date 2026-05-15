@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sakanle/core/constant/app_color.dart';
-import 'package:sakanle/view/widgets/home/property/room_widget_button.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/room_widget_button.dart';
 
 class RoomDetailsWidget extends StatelessWidget {
   const RoomDetailsWidget({

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/property/property_info_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
-import 'package:sakanle/view/widgets/home/property/build_circle.dart';
-import 'package:sakanle/view/widgets/home/property/my_cancel_button.dart';
-import 'package:sakanle/view/widgets/home/property/my_next_button.dart';
-import 'package:sakanle/view/widgets/home/property/notice_box.dart';
+import 'package:sakanle/view/widgets/home/property/add_property_widgets/build_circle.dart';
+import 'package:sakanle/view/widgets/home/property/add_property_widgets/my_cancel_button.dart';
+import 'package:sakanle/view/widgets/home/property/add_property_widgets/my_next_button.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_three/notice_box.dart';
 
 class PropertyInfo extends StatelessWidget {
   const PropertyInfo({super.key});

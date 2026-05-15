@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:sakanle/controller/property/property_info_one_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/functions/validate_input.dart';
-import 'package:sakanle/view/widgets/home/property/my_custom_drop_down.dart';
-import 'package:sakanle/view/widgets/home/property/my_date_filed_widget.dart';
-import 'package:sakanle/view/widgets/home/property/my_details_text_filed.dart';
-import 'package:sakanle/view/widgets/home/property/my_text_form_property.dart';
-import 'package:sakanle/view/widgets/home/property/radio_list_tile_widget.dart';
-import 'package:sakanle/view/widgets/home/property/rich_text_widget.dart';
-import 'package:sakanle/view/widgets/home/property/room_details_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_custom_drop_down.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_date_filed_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_details_text_filed.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_text_form_property.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/radio_list_tile_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/rich_text_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/room_details_widget.dart';
 
 class PropertyInfoOne extends StatelessWidget {
   const PropertyInfoOne({super.key});

@@ -9,13 +9,13 @@ abstract class VerifiedEmailController extends GetxController {
 }
 
 class VerifiedEmailControllerImp extends VerifiedEmailController {
-  late TextEditingController email;
-  late GlobalKey<FormState> formState;
+  final TextEditingController email = TextEditingController();
+  final GlobalKey<FormState> formState = GlobalKey<FormState>();
+
   @override
-  void onInit() {
-    email = TextEditingController();
-    formState = GlobalKey<FormState>();
-    super.onInit();
+  void onClose() {
+    email.dispose();
+    super.onClose();
   }
 
   @override

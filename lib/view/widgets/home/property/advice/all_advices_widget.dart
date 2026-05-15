@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/property/advice_page_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
-import 'package:sakanle/view/widgets/home/property/widget_text.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/widget_text.dart';
 
 class AllAdvicesWidget extends StatelessWidget {
   const AllAdvicesWidget({super.key});

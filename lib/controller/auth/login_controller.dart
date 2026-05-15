@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_error_message.dart';
 
 abstract class LoginController extends GetxController {
-  void onChangedRemember(val);
-  void onChangedPrivacy(val);
+  void onChangedRemember(bool val);
+  void onChangedPrivacy(bool val);
   void navigateToVerifiedEmail();
   void navigateToSignUp();
   void login();
   void changeObscureText();
+  bool validatePrivacy();
 }
 
 class LoginControllerImp extends LoginController {
-  late TextEditingController email;
-  late TextEditingController password;
-  late bool checkBoxRemember;
-  late bool checkBoxPrivacy;
-  late GlobalKey<FormState> formState;
-  late bool obscureText;
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  bool checkBoxRemember = false;
+  bool checkBoxPrivacy = false;
+  GlobalKey<FormState> formState = GlobalKey<FormState>();
+  bool obscureText = true;
+
   @override
-  void onInit() {
-    email = TextEditingController();
-    password = TextEditingController();
-    checkBoxRemember = false;
-    checkBoxPrivacy = false;
-    formState = GlobalKey<FormState>();
-    obscureText = true;
-    super.onInit();
+  void onClose() {
+    email.dispose();
+    password.dispose();
+    super.onClose();
   }
 
   @override
-  void onChangedRemember(val) {
+  void onChangedRemember(bool val) {
     checkBoxRemember = val;
     update();
   }
@@ -41,13 +40,14 @@ class LoginControllerImp extends LoginController {
   }
 
   @override
-  void onChangedPrivacy(val) {
+  void onChangedPrivacy(bool val) {
     checkBoxPrivacy = val;
     update();
   }
 
   @override
   void login() {
+    if (!validatePrivacy()) return;
     if (formState.currentState!.validate()) {
       Get.offAllNamed(AppRoute.homePage);
     }
@@ -62,5 +62,14 @@ class LoginControllerImp extends LoginController {
   void changeObscureText() {
     obscureText = !obscureText;
     update();
+  }
+
+  @override
+  bool validatePrivacy() {
+    if (!checkBoxPrivacy) {
+      showErrorMessage("يجب الموافقة على الشروط وسياسة الخصوصية");
+      return false;
+    }
+    return true;
   }
 }

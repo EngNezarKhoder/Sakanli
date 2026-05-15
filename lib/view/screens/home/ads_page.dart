@@ -89,69 +89,75 @@ class AdsPage extends StatelessWidget {
             },
           ),
           const SizedBox(height: 27),
-          GetBuilder<AdsPageControllerImp>(
-            builder: (controller) {
-              return controller.viewMode == "lv"
-                  ? ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        HomeAdWidget(
-                          imageName: AppImageAssets.roomOneIcon,
-                          iconName: AppImageAssets.favoriteIcon,
-                          forWhat: "أ",
-                          city: " حمص",
-                          noMonth: "1",
-                          price: "80\$",
-                          caption:
-                              "يرجى إدخال بريدك الإلكتروني. سنقوم بإرسال رمز التحقق إلى بريدك",
-                        ),
-                        const SizedBox(height: 20),
-                        HomeAdWidget(
-                          imageName: AppImageAssets.roomOneIcon,
-                          iconName: AppImageAssets.favoriteIcon,
-                          forWhat: "ش",
-                          city: " حمص",
-                          noMonth: "1",
-                          price: "80\$",
-                          caption:
-                              "يرجى إدخال بريدك الإلكتروني. سنقوم بإرسال رمز التحقق إلى بريدك",
-                        ),
-                      ],
-                    )
-                  : Container(
-                      child: GridView(
+          InkWell(
+            onTap: () {
+              controller.navigateToPropertyDetails();
+            },
+            child: GetBuilder<AdsPageControllerImp>(
+              builder: (controller) {
+                return controller.viewMode == "lv"
+                    ? ListView(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 0.65,
-                        ),
                         children: [
-                          HomeAdGridWidget(
-                            caption: "sasl;dadkak",
-                            city: "حمص ",
-                            forWhat: "ش",
+                          HomeAdWidget(
+                            imageName: AppImageAssets.roomOneIcon,
                             iconName: AppImageAssets.favoriteIcon,
-                            imageName: AppImageAssets.roomTwoIcon,
+                            forWhat: "أ",
+                            city: " حمص",
                             noMonth: "1",
-                            price: "100\$",
+                            price: "80\$",
+                            caption:
+                                "يرجى إدخال بريدك الإلكتروني. سنقوم بإرسال رمز التحقق إلى بريدك",
                           ),
-                          HomeAdGridWidget(
-                            caption: "sasl;dadkak",
-                            city: "حمص ",
-                            forWhat: "ش",
+                          const SizedBox(height: 20),
+                          HomeAdWidget(
+                            imageName: AppImageAssets.roomOneIcon,
                             iconName: AppImageAssets.favoriteIcon,
-                            imageName: AppImageAssets.roomTwoIcon,
+                            forWhat: "ش",
+                            city: " حمص",
                             noMonth: "1",
-                            price: "100\$",
+                            price: "80\$",
+                            caption:
+                                "يرجى إدخال بريدك الإلكتروني. سنقوم بإرسال رمز التحقق إلى بريدك",
                           ),
                         ],
-                      ),
-                    );
-            },
+                      )
+                    : Container(
+                        child: GridView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 0.65,
+                              ),
+                          children: [
+                            HomeAdGridWidget(
+                              caption: "sasl;dadkak",
+                              city: "حمص ",
+                              forWhat: "ش",
+                              iconName: AppImageAssets.favoriteIcon,
+                              imageName: AppImageAssets.roomTwoIcon,
+                              noMonth: "1",
+                              price: "100\$",
+                            ),
+                            HomeAdGridWidget(
+                              caption: "sasl;dadkak",
+                              city: "حمص ",
+                              forWhat: "ش",
+                              iconName: AppImageAssets.favoriteIcon,
+                              imageName: AppImageAssets.roomTwoIcon,
+                              noMonth: "1",
+                              price: "100\$",
+                            ),
+                          ],
+                        ),
+                      );
+              },
+            ),
           ),
         ],
       ),

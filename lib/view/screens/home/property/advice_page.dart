@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
-import 'package:sakanle/view/widgets/home/property/all_advices_widget.dart';
+import 'package:sakanle/view/widgets/home/property/advice/all_advices_widget.dart';
 
 class AdvicePage extends StatelessWidget {
   const AdvicePage({super.key});

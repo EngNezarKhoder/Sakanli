@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_error_message.dart';
 
 abstract class SignUpController extends GetxController {
   void changeCheckBoxPrivacy(bool val);
   void navigateToSignIn();
   void signUp();
   void changeObscureText();
+  bool validatePrivacy();
 }
 
 class SignUpControllerImp extends SignUpController {
-  late TextEditingController email;
-  late TextEditingController userName;
-  late TextEditingController phone;
-  late TextEditingController password;
-  late bool checkBoxValue;
-  late GlobalKey<FormState> formState;
-  late bool obscureText;
+  final TextEditingController email = TextEditingController();
+  final TextEditingController userName = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  bool checkBoxValue = false;
+  GlobalKey<FormState> formState = GlobalKey<FormState>();
+  bool obscureText = true;
+
   @override
-  void onInit() {
-    email = TextEditingController();
-    userName = TextEditingController();
-    phone = TextEditingController();
-    password = TextEditingController();
-    checkBoxValue = false;
-    formState = GlobalKey<FormState>();
-    obscureText = true;
-    super.onInit();
+  void onClose() {
+    email.dispose();
+    userName.dispose();
+    phone.dispose();
+    password.dispose();
+    super.onClose();
   }
 
   @override
@@ -36,8 +36,11 @@ class SignUpControllerImp extends SignUpController {
   }
 
   @override
-  void signUp() {
-    if (formState.currentState!.validate()) {}
+  void signUp() async {
+    if (!validatePrivacy()) return;
+    if (formState.currentState!.validate()) {
+      Get.toNamed(AppRoute.verifiedCodeSignUp);
+    }
   }
 
   @override
@@ -49,5 +52,14 @@ class SignUpControllerImp extends SignUpController {
   void changeObscureText() {
     obscureText = !obscureText;
     update();
+  }
+
+  @override
+  bool validatePrivacy() {
+    if (!checkBoxValue) {
+      showErrorMessage("يجب الموافقة على الشروط وسياسة الخصوصية");
+      return false;
+    }
+    return true;
   }
 }

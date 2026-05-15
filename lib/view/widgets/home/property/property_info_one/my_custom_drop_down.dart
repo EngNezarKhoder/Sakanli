@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sakanle/core/constant/app_color.dart';
-import 'package:sakanle/view/widgets/home/property/rich_text_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/rich_text_widget.dart';
 
 class MyCustomDropDown extends StatelessWidget {
   const MyCustomDropDown({

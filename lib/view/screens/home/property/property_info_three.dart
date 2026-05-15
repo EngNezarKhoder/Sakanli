@@ -4,11 +4,11 @@ import 'package:sakanle/controller/property/property_info_three_controller.dart'
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/functions/show_options_image.dart';
 import 'package:sakanle/core/functions/validate_input.dart';
-import 'package:sakanle/view/widgets/home/property/add_image_box.dart';
-import 'package:sakanle/view/widgets/home/property/image_container.dart';
-import 'package:sakanle/view/widgets/home/property/info_image_box.dart';
-import 'package:sakanle/view/widgets/home/property/my_text_form_property.dart';
-import 'package:sakanle/view/widgets/home/property/rich_text_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_three/add_image_box.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_three/image_container.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_three/info_image_box.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_text_form_property.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/rich_text_widget.dart';
 
 class PropertyInfoThree extends StatelessWidget {
   const PropertyInfoThree({super.key});

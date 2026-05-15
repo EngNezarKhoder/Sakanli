@@ -37,11 +37,11 @@ class MyCustomTextFormAuth extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: AppColor.secondColor, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: AppColor.secondColor, width: 1.5),
           borderRadius: BorderRadius.circular(12),
         ),
         disabledBorder: OutlineInputBorder(

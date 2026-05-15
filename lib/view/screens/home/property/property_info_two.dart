@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/property/property_info_two_controller.dart';
 import 'package:sakanle/core/functions/validate_input.dart';
-import 'package:sakanle/view/widgets/home/property/add_another_location.dart';
-import 'package:sakanle/view/widgets/home/property/add_location.dart';
-import 'package:sakanle/view/widgets/home/property/my_custom_drop_down.dart';
-import 'package:sakanle/view/widgets/home/property/my_text_form_property.dart';
-import 'package:sakanle/view/widgets/home/property/rich_text_widget.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_two/add_another_location.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_two/add_location.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_custom_drop_down.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/my_text_form_property.dart';
+import 'package:sakanle/view/widgets/home/property/property_info_one/rich_text_widget.dart';
 
 class PropertyInfoTwo extends StatelessWidget {
   const PropertyInfoTwo({super.key});

@@ -6,6 +6,7 @@ abstract class AdsPageController extends GetxController {
   void changeViewMode(String mode);
   void navigateToFilter();
   void navigateToAddProperty();
+  void navigateToPropertyDetails();
 }
 
 class AdsPageControllerImp extends AdsPageController {
@@ -34,5 +35,10 @@ class AdsPageControllerImp extends AdsPageController {
   @override
   void navigateToAddProperty() {
     Get.toNamed(AppRoute.addProperty);
+  }
+
+  @override
+  void navigateToPropertyDetails() {
+    Get.toNamed(AppRoute.propertyDetails);
   }
 }

@@ -3,6 +3,7 @@ class AppRoute {
   static const String login = "/";
   static const String verifiedEmail = "/verifiedEmail";
   static const String signUp = "/signUp";
+  static const String verifiedCodeSignUp = "/verifiedCodeSignUp";
   static const String resetPassword = "/resetPassword";
   static const String verifiedCode = "/verifiedCode";
   // Home Page
@@ -20,4 +21,6 @@ class AppRoute {
   static const String propertyInfoTwo = "/propertyInfoTwo";
   static const String propertyInfoThree = "/propertyInfoThree";
   static const String mapScreen = "/mapScreen";
+  static const String foundedResults = "/foundedResults";
+  static const String propertyDetails = "/propertyDetails";
 }
