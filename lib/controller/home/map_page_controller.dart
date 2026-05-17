@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sakanle/core/constant/app_route.dart';
-import 'package:sakanle/core/functions/show_filter_sheet.dart';
+import 'package:sakanle/core/functions/show_filter_map_sheet.dart';
 import 'package:sakanle/core/functions/show_message.dart';
 import 'package:sakanle/core/functions/show_open_location.dart';
 
@@ -34,7 +34,7 @@ class MapPageControllerImp extends MapPageController {
   late List<Map<String, dynamic>> foundedResults;
   late String selectedCity;
   late String selectedService;
-  RxBool filterEnabled = false.obs;
+  bool filterEnabled = false;
 
   @override
   void onInit() {
@@ -77,20 +77,21 @@ class MapPageControllerImp extends MapPageController {
   void getCurrentCenter() async {
     await Future.delayed(Duration(seconds: 5));
     currentCenter.value = LatLng(35.8, 38.01);
+    update(['map']);
   }
 
   @override
   void changeStatusOfCityButton(int index) {
     citesStatus = List.generate(cites.length, (status) => false);
     citesStatus[index] = true;
-    update();
+    update(['cities']);
   }
 
   @override
   void changeStatusOfSErviceButton(int index) {
     servicesStatus = List.generate(services.length, (status) => false);
     servicesStatus[index] = true;
-    update();
+    update(['services']);
   }
 
   @override
@@ -178,7 +179,7 @@ class MapPageControllerImp extends MapPageController {
         if (selectedCity != '') foundedResults = [];
         break;
     }
-    update();
+    update(['results']);
   }
 
   @override
@@ -226,9 +227,10 @@ class MapPageControllerImp extends MapPageController {
 
   @override
   void showFilterSheet() async {
-    var result = await showFilterBottomSheet();
+    var result = await showFilterMapsBottomSheet();
     if (result != null) {
-      filterEnabled.value = result['filterEnabled'];
+      filterEnabled = result['filterEnabled'];
+      update(['filter']);
     }
   }
 

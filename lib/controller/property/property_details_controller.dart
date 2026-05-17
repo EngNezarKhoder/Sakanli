@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/data/model/property_details.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 abstract class PropertyDetailsController extends GetxController {
   void changeCurrentIndex(int index);
+  void callWhatsApp();
+  void back();
+  void callPhone();
 }
 
 class PropertyDetailsControllerImp extends PropertyDetailsController {
-  late int countOfImages;
+  int countOfImages = 3;
   late List<String> titlesOfDetails;
   late List<PropertyDetails> propertyDetailsOne;
   late List<PropertyDetails> propertyDetailsTwo;
   late List<PropertyDetails> propertyDetailsThree;
   late List<List<PropertyDetails>> propertyDetails;
-  late int currentIndex;
+  int currentIndex = 0;
 
   @override
   void onInit() {
-    currentIndex = 0;
     propertyDetailsOne = [
       PropertyDetails(icon: Icons.home, title: 'نوع العقار', content: 'شقة'),
       PropertyDetails(
@@ -114,7 +117,6 @@ class PropertyDetailsControllerImp extends PropertyDetailsController {
       propertyDetailsTwo,
       propertyDetailsThree,
     ];
-    countOfImages = 3;
     titlesOfDetails = ['العقار', 'الموقع', 'الإعلان'];
     super.onInit();
   }
@@ -123,5 +125,23 @@ class PropertyDetailsControllerImp extends PropertyDetailsController {
   void changeCurrentIndex(int index) {
     currentIndex = index;
     update();
+  }
+
+  @override
+  void callWhatsApp() async {
+    final Uri whatsapp = Uri.parse("https://wa.me/963983076884");
+
+    await launchUrl(whatsapp, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  void back() {
+    Get.back();
+  }
+
+  @override
+  void callPhone() async {
+    final Uri phone = Uri(scheme: 'tel', path: '+963983076884');
+    await launchUrl(phone, mode: LaunchMode.externalApplication);
   }
 }

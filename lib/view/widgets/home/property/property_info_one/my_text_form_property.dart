@@ -6,7 +6,8 @@ class MyTextFormProperty extends StatelessWidget {
     super.key,
     required this.keyboardType,
     required this.validator,
-    required this.myController, required this.hintText,
+    required this.myController,
+    required this.hintText,
   });
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
@@ -26,11 +27,11 @@ class MyTextFormProperty extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: AppColor.secondColor, width: 1),
           borderRadius: BorderRadius.circular(12),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(color: AppColor.secondColor, width: 1.5),
           borderRadius: BorderRadius.circular(12),
         ),
         disabledBorder: OutlineInputBorder(

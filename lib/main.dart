@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: getPages,
       locale: Locale("ar"),
-      theme: themeData
+      theme: themeData,
     );
   }
 }

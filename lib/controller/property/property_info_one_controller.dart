@@ -15,55 +15,44 @@ abstract class PropertyInfoOneController extends GetxController {
   void removeToilet();
   void setDate(DateTime date);
   bool validatePageFields();
+  void changeFocusFront(bool val);
+  void changeFocusPropertyType(bool val);
+  void changeFocusOwnerShip(bool val);
 }
 
 class PropertyInfoOneControllerImp extends PropertyInfoOneController {
   late List<Map<String, dynamic>> serviceInfo;
-  late TextEditingController priceSale;
-  late TextEditingController priceRentAnnually;
-  late TextEditingController priceRentMonthly;
-  late TextEditingController priceRentDaily;
+  final TextEditingController priceSale = TextEditingController();
+  TextEditingController priceRentAnnually = TextEditingController();
+  final TextEditingController priceRentMonthly = TextEditingController();
+  final TextEditingController priceRentDaily = TextEditingController();
   late List<String> propertyTypes;
   late List<String> fronts;
-  late String selectedProperty;
-  late String advertiserType;
-  late TextEditingController propertyArea;
-  late String front;
+  String? selectedProperty;
+  String? advertiserType;
+  final TextEditingController propertyArea = TextEditingController();
+  String? front;
   late List<String> ownerShips;
-  late String ownerShip;
-  late int countBedRoom;
-  late int countPathRoom;
-  late int countToilet;
-  late TextEditingController myDate;
-  late DateTime selectedDate;
-  late TextEditingController detailsController;
+  String? ownerShip;
+  int countBedRoom = 0;
+  int countPathRoom = 0;
+  int countToilet = 0;
+  final TextEditingController myDate = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  final TextEditingController detailsController = TextEditingController();
   RxInt textLength = 0.obs;
-  late GlobalKey<FormState> formState;
+  final GlobalKey<FormState> formState = GlobalKey<FormState>();
 
-  late bool requiredService;
-  late bool requiredAdvertiserType;
-  late bool requiredPropertyArea;
-  late bool status;
+  bool isFocusFront = false;
+  bool isFocusPropertyType = false;
+  bool isFocusPropertyOwnerShip = false;
+
+  final FocusNode frontFocusNode = FocusNode();
+  final FocusNode propertyTypeFocusNode = FocusNode();
+  final FocusNode ownerShipFocusNode = FocusNode();
 
   @override
   void onInit() {
-    advertiserType = "";
-    propertyArea = TextEditingController();
-    priceSale = TextEditingController();
-    priceRentAnnually = TextEditingController();
-    priceRentMonthly = TextEditingController();
-    priceRentDaily = TextEditingController();
-    myDate = TextEditingController();
-    detailsController = TextEditingController();
-    formState = GlobalKey<FormState>();
-    countBedRoom = 0;
-    countPathRoom = 0;
-    countToilet = 0;
-    selectedDate = DateTime.now();
-    requiredService = false;
-    requiredAdvertiserType = false;
-    requiredPropertyArea = false;
-    status = false;
     propertyTypes = [
       'اخرى',
       'اسهم',
@@ -109,9 +98,6 @@ class PropertyInfoOneControllerImp extends PropertyInfoOneController {
       'قيد شرعي',
       'إشغال',
     ];
-    front = 'اخرى';
-    selectedProperty = 'اخرى';
-    ownerShip = 'اخرى';
     serviceInfo = [
       {
         "title": "للبيع",
@@ -220,24 +206,40 @@ class PropertyInfoOneControllerImp extends PropertyInfoOneController {
 
   @override
   bool validatePageFields() {
-    for (int i = 0; i < serviceInfo.length; i++) {
-      if (serviceInfo[i]['status'] == true) {
-        requiredService = true;
-        break;
-      }
-    }
-    if (advertiserType != '') {
-      requiredAdvertiserType = true;
-    }
-    if (propertyArea.text != '') {
-      requiredPropertyArea = true;
-    }
-    if (formState.currentState!.validate() &&
-        requiredAdvertiserType &&
-        requiredPropertyArea &&
-        requiredService) {
-      status = true;
-    }
-    return status;
+    return serviceInfo.any((e) => e['status'] == true) &&
+        (selectedProperty?.isNotEmpty ?? false) &&
+        (advertiserType?.isNotEmpty ?? false) &&
+        (front?.isNotEmpty ?? false) &&
+        (ownerShip?.isNotEmpty ?? false);
+  }
+
+  @override
+  void onClose() {
+    detailsController.dispose();
+    myDate.dispose();
+    propertyArea.dispose();
+    priceRentDaily.dispose();
+    priceRentMonthly.dispose();
+    priceRentAnnually.dispose();
+    priceSale.dispose();
+    super.onClose();
+  }
+
+  @override
+  void changeFocusFront(bool val) {
+    isFocusFront = val;
+    update();
+  }
+
+  @override
+  void changeFocusOwnerShip(bool val) {
+    isFocusPropertyOwnerShip = val;
+    update();
+  }
+
+  @override
+  void changeFocusPropertyType(bool val) {
+    isFocusPropertyType = val;
+    update();
   }
 }

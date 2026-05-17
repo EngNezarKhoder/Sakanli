@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,18 +11,20 @@ abstract class MapScreenController extends GetxController {
   void confirmLocation();
   Future<void> getCurrentLocation();
   Future<void> getAddressFromLatLng(double lat, double lng);
+  void onMapMoved(LatLng center);
 }
 
 class MapScreenControllerImp extends MapScreenController {
-  late MapController mapController;
+  MapController mapController = MapController();
   RxBool isMapReady = false.obs;
   Rxn<LatLng> currentCenter = Rxn<LatLng>();
   RxDouble lat = 0.0.obs;
   RxDouble lng = 0.0.obs;
   RxString address = "".obs;
+  Timer? debounceTimer;
+  RxBool isMoving = false.obs;
   @override
   void onInit() async {
-    mapController = MapController();
     await getCurrentLocation();
     await getAddressFromLatLng(lat.value, lng.value);
     super.onInit();
@@ -35,7 +39,9 @@ class MapScreenControllerImp extends MapScreenController {
 
   @override
   void confirmLocation() {
-    Get.back(result: {"lat": lat.value, "lng": lng.value, "address": address.value});
+    Get.back(
+      result: {"lat": lat.value, "lng": lng.value, "address": address.value},
+    );
   }
 
   @override
@@ -63,5 +69,17 @@ class MapScreenControllerImp extends MapScreenController {
       print(address.value);
       address.value = "لم يتم العثور على عنوان";
     }
+  }
+
+  @override
+  void onMapMoved(LatLng center) {
+    lat.value = center.latitude;
+    lng.value = center.longitude;
+    isMoving.value = true;
+    debounceTimer?.cancel();
+    debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      getAddressFromLatLng(center.latitude, center.longitude);
+      isMoving.value = false;
+    });
   }
 }

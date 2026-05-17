@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/home/founded_results_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
+import 'package:sakanle/core/constant/image_assets.dart';
 import 'package:sakanle/view/widgets/home/map/my_button_location.dart';
 import 'package:sakanle/view/widgets/home/property/property_info_one/price_widget.dart';
 import 'package:sakanle/view/widgets/home/property/founded_result/property_card.dart';
@@ -11,9 +12,8 @@ class FoundedResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FoundedResultsControllerImp controller = Get.put(
-      FoundedResultsControllerImp(),
-    );
+    FoundedResultsControllerImp controller =
+        Get.find<FoundedResultsControllerImp>();
     return Scaffold(
       backgroundColor: AppColor.whiteColor,
       appBar: AppBar(
@@ -87,8 +87,7 @@ class FoundedResults extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           PropertyCard(
-            image:
-                'https://images.unsplash.com/photo-1600585154526-990dced4db0d',
+            image: AppImageAssets.roomTwoIcon,
             price: 'USD 35,000 ',
             propertyType: 'شقة',
             description: 'شقة طابق خامس مع مصعد',

@@ -28,7 +28,6 @@ class ResetPasswordControllerImp extends ResetPasswordController {
   void resetPassword() {
     if (!validatePassword()) return;
     if (formState.currentState!.validate()) {
-      // Get.offNamed(AppRoute.login);
       showSuccessDialog();
     }
   }

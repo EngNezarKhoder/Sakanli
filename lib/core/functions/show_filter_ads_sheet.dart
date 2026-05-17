@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sakanle/controller/home/filter/filter_map_controller.dart';
+import 'package:sakanle/controller/home/filter/filter_ads_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
+import 'package:sakanle/core/functions/validate_input.dart';
+import 'package:sakanle/view/widgets/home/property/filter/my_custom_text_form_filter.dart';
 
-Future<dynamic> showFilterBottomSheet() async {
-  FilterMapControllerImp controller = Get.put(FilterMapControllerImp());
+Future<dynamic> showFilterAdsBottomSheet() async {
+  final controller = Get.isRegistered<FilterAdsControllerImp>()
+      ? Get.find<FilterAdsControllerImp>()
+      : Get.put(FilterAdsControllerImp());
 
   return await Get.bottomSheet(
     Container(
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        gradient: RadialGradient(
+          center: Alignment.topLeft,
+          radius: 1.5,
+          colors: [
+            Color(0xFFFFC56B),
+            Color(0xFFFFE2BD),
+            Color.fromARGB(255, 253, 239, 221),
+          ],
+        ),
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: SafeArea(
@@ -30,91 +42,32 @@ Future<dynamic> showFilterBottomSheet() async {
               ),
               const SizedBox(height: 20),
               const Text(
-                'فلاتر الخريطة',
+                'فلاتر البحث',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 25),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'السعر',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              MyCustomTextFormFilter(
+                hintText: 'أدخل اسم المحافظة أو المدينة',
+                myController: controller.cityName,
+                validator: (val) {
+                  return validateInput(val ?? '', 3, 100, 'city');
+                },
+                keyboardType: TextInputType.text,
+                prefixIcon: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 7,
                   ),
-                  Obx(
-                    () => Row(
-                      children: [
-                        const Text('تفعيل البحث بالسعر'),
-                        const SizedBox(width: 10),
-                        Switch(
-                          value: controller.priceEnabled.value,
-                          activeThumbColor: AppColor.primaryColor,
-                          onChanged: (value) {
-                            controller.changeValueOfPrice(value);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Obx(
-                () => controller.priceEnabled.value
-                    ? Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Obx(
-                                  () => Text(
-                                    'من: ${controller.price.value.toStringAsFixed(1)} دولار',
-                                  ),
-                                ),
-                                const Text('أي سعر'),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                            Obx(
-                              () => Slider(
-                                value: controller.price.value,
-                                min: 0,
-                                max: 50000,
-                                activeColor: AppColor.primaryColor,
-                                onChanged: (value) {
-                                  controller.price.value = value;
-                                },
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: AppColor.thirdColor.withValues(
-                                  alpha: 0.2,
-                                ),
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: const Text(
-                                'حرّك المؤشر لتحديد نطاق السعر أو اتركه على كامل المدى لإظهار كافة الأسعار',
-                                style: TextStyle(fontSize: 13),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
+                  child: const Icon(Icons.location_pin),
+                ),
               ),
               const SizedBox(height: 30),
               const Text(
                 'نوع العقار',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 15),
               Obx(
@@ -149,7 +102,10 @@ Future<dynamic> showFilterBottomSheet() async {
               const SizedBox(height: 30),
               const Text(
                 'طبيعة العقار',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 15),
               Obx(

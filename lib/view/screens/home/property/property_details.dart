@@ -7,7 +7,6 @@ import 'package:sakanle/view/widgets/home/property/details/image_container_view.
 import 'package:sakanle/view/widgets/home/property/add_property_widgets/my_cancel_button.dart';
 import 'package:sakanle/view/widgets/home/property/add_property_widgets/my_next_button.dart';
 import 'package:sakanle/view/widgets/home/property/details/my_button_details.dart';
-import 'package:sakanle/view/widgets/home/property/details/my_report_button.dart';
 import 'package:sakanle/view/widgets/home/property/details/owner_card_call.dart';
 import 'package:sakanle/view/widgets/home/property/details/property_card.dart';
 import 'package:sakanle/view/widgets/home/property/details/property_details_widget.dart';
@@ -17,9 +16,8 @@ class PropertyDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PropertyDetailsControllerImp controller = Get.put(
-      PropertyDetailsControllerImp(),
-    );
+    final PropertyDetailsControllerImp controller =
+        Get.find<PropertyDetailsControllerImp>();
     return Scaffold(
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16),
@@ -29,18 +27,20 @@ class PropertyDetails extends StatelessWidget {
           children: [
             Row(
               children: [
-                MyCancelButton(onPressed: () {}, title: "مراسلة واتساب"),
+                MyCancelButton(
+                  onPressed: () {
+                    controller.callWhatsApp();
+                  },
+                  title: "مراسلة واتساب",
+                ),
                 SizedBox(width: 10),
-                MyNextButton(onPressed: () {}, title: "اتصال"),
+                MyNextButton(
+                  onPressed: () {
+                    controller.callPhone();
+                  },
+                  title: "اتصال",
+                ),
               ],
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              child: MyReportButton(
-                onPressed: () {},
-                title: "الإبلاغ عن العقار",
-              ),
             ),
           ],
         ),
@@ -56,7 +56,13 @@ class PropertyDetails extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(Icons.arrow_back, color: Colors.black),
+                child: IconButton(
+                  onPressed: () {
+                    controller.back();
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  color: Colors.black,
+                ),
               ),
             ),
             actions: [
@@ -216,7 +222,12 @@ class PropertyDetails extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  OwnerCardCall(ownerName: 'نزار'),
+                  InkWell(
+                    onTap: () {
+                      controller.callPhone();
+                    },
+                    child: OwnerCardCall(ownerName: 'نزار'),
+                  ),
                   const SizedBox(height: 10),
                 ],
               ),

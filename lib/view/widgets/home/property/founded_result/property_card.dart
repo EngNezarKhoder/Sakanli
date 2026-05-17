@@ -46,7 +46,7 @@ class PropertyCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 child: Stack(
                   children: [
-                    Image.network(
+                    Image.asset(
                       image,
                       width: 95,
                       height: 95,
@@ -65,7 +65,7 @@ class PropertyCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
-                          'طابو',
+                          'سكنلي',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,

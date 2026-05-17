@@ -1,10 +1,16 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
 
-Future<bool> alertExitApp() async {
+Future<bool> alert({
+  required String title,
+  required String content,
+  required String cancelButtonTitle,
+  required String okButtonTitle,
+  required void Function()? onPressedOk,
+  required void Function()? onPressedCancel,
+}) async {
   Get.dialog(
     Dialog(
       backgroundColor: Colors.transparent,
@@ -39,22 +45,18 @@ Future<bool> alertExitApp() async {
               ),
               child: Image.asset(AppImageAssets.logoImage),
             ),
-
             const SizedBox(height: 24),
-
-            const Text(
-              "مغادرة التطبيق",
+            Text(
+              title,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF0D0700),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            const Text(
-              "هل أنت متأكد من رغبتك بمغادرة التطبيق ؟",
+            Text(
+              content,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -62,16 +64,12 @@ Future<bool> alertExitApp() async {
                 color: Colors.black87,
               ),
             ),
-
             const SizedBox(height: 28),
-
             Row(
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      exit(0);
-                    },
+                    onPressed: onPressedOk,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent,
                       foregroundColor: Colors.white,
@@ -81,8 +79,8 @@ Future<bool> alertExitApp() async {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: const Text(
-                      "مغادرة",
+                    child: Text(
+                      okButtonTitle,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -90,14 +88,10 @@ Future<bool> alertExitApp() async {
                     ),
                   ),
                 ),
-
                 const SizedBox(width: 12),
-
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                    },
+                    onPressed: onPressedCancel,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.primaryColor,
                       foregroundColor: Colors.white,
@@ -107,8 +101,8 @@ Future<bool> alertExitApp() async {
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    child: const Text(
-                      "إلغاء",
+                    child: Text(
+                      cancelButtonTitle,
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,

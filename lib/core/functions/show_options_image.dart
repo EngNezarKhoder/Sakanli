@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sakanle/core/constant/app_color.dart';
 
 void showCustomDialog(
   context, {
@@ -18,7 +19,7 @@ void showCustomDialog(
             Text("اختر مصدر الصور", style: TextTheme.of(context).bodySmall),
             SizedBox(height: 20),
             ListTile(
-              leading: Icon(Icons.image, color: Colors.green),
+              leading: Icon(Icons.image, color: AppColor.primaryColor),
               title: Text(
                 "من المعرض",
                 style: TextTheme.of(
@@ -30,7 +31,7 @@ void showCustomDialog(
               },
             ),
             ListTile(
-              leading: Icon(Icons.camera_alt, color: Colors.green),
+              leading: Icon(Icons.camera_alt, color: AppColor.primaryColor),
               title: Text(
                 "من الكاميرا",
                 style: TextTheme.of(

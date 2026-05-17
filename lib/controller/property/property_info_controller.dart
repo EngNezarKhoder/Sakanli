@@ -4,11 +4,11 @@ import 'package:sakanle/controller/property/property_info_one_controller.dart';
 import 'package:sakanle/controller/property/property_info_three_controller.dart';
 import 'package:sakanle/controller/property/property_info_two_controller.dart';
 import 'package:sakanle/core/constant/app_route.dart';
+import 'package:sakanle/core/functions/show_error_message.dart';
 import 'package:sakanle/core/functions/show_success_message.dart';
-import 'package:sakanle/core/functions/show_warning_dialog.dart';
-import 'package:sakanle/view/screens/home/property/property_info_one.dart';
-import 'package:sakanle/view/screens/home/property/property_info_three.dart';
-import 'package:sakanle/view/screens/home/property/property_info_two.dart';
+import 'package:sakanle/view/screens/home/property/add_property/property_info_one.dart';
+import 'package:sakanle/view/screens/home/property/add_property/property_info_three.dart';
+import 'package:sakanle/view/screens/home/property/add_property/property_info_two.dart';
 
 abstract class PropertyInfoController extends GetxController {
   void changeValueOfIndex(int val);
@@ -17,21 +17,15 @@ abstract class PropertyInfoController extends GetxController {
 }
 
 class PropertyInfoControllerImp extends PropertyInfoController {
-  late int index;
-  late PageController pageController;
-  late List<Widget> pages;
-  late bool pageOneIsDone;
-  late bool pageTwoIsDone;
-
-  @override
-  void onInit() {
-    pageOneIsDone = false;
-    pageTwoIsDone = false;
-    pages = [PropertyInfoOne(), PropertyInfoTwo(), PropertyInfoThree()];
-    pageController = PageController();
-    index = 0;
-    super.onInit();
-  }
+  int index = 0;
+  final PageController pageController = PageController();
+  late List<Widget> pages = [
+    PropertyInfoOne(),
+    PropertyInfoTwo(),
+    PropertyInfoThree(),
+  ];
+  bool pageOneIsDone = false;
+  bool pageTwoIsDone = false;
 
   @override
   void changeValueOfIndex(int val) {
@@ -45,13 +39,7 @@ class PropertyInfoControllerImp extends PropertyInfoController {
       PropertyInfoOneControllerImp controllerOne =
           Get.find<PropertyInfoOneControllerImp>();
       if (!controllerOne.validatePageFields()) {
-        Get.snackbar(
-          "تنبيه",
-          "يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        showErrorMessage("يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *");
         return;
       } else {
         pageOneIsDone = true;
@@ -63,13 +51,10 @@ class PropertyInfoControllerImp extends PropertyInfoController {
           Get.find<PropertyInfoTwoControllerImp>();
       String message = controllerTwo.validateFields();
       if (message == "fieldsError") {
-        showWarningDialog(
-          "تنبيه",
-          "يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *",
-        );
+        showErrorMessage("يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *");
         return;
       } else if (message == "addError") {
-        showWarningDialog("تنبيه", "يرجى تحديد موقع العقار على الخريطة");
+        showErrorMessage("يرجى تحديد موقع العقار على الخريطة");
         return;
       } else {
         pageTwoIsDone = true;
@@ -79,15 +64,11 @@ class PropertyInfoControllerImp extends PropertyInfoController {
     if (index == 2) {
       PropertyInfoThreeControllerImp controllerThree =
           Get.find<PropertyInfoThreeControllerImp>();
-      if (!controllerThree.validateFields()) {
-        Get.snackbar(
-          "تنبيه",
-          "يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+      if (controllerThree.validateFields() == 'imageError') {
+        showErrorMessage("يرجى رفع صورة واحدة للعقار كحد أدنى");
         return;
+      } else if (controllerThree.validateFields() == 'fieldsError') {
+        showErrorMessage("يرجى اتمام جميع الحقول المطلوبة و المحددة بعلامة *");
       } else {
         showSuccessMessage();
         await Future.delayed(Duration(seconds: 3));
@@ -106,6 +87,7 @@ class PropertyInfoControllerImp extends PropertyInfoController {
 
   @override
   void navigateToPerviousPage() {
+    if (index == 0) Get.back();
     if (index > 0) {
       index--;
       pageController.animateToPage(

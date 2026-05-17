@@ -12,39 +12,42 @@ class PropertyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PropertyInfoControllerImp controller = Get.put(PropertyInfoControllerImp());
+    PropertyInfoControllerImp controller =
+        Get.find<PropertyInfoControllerImp>();
     return Scaffold(
-      backgroundColor: AppColor.whiteColor,
-      bottomNavigationBar: GetBuilder<PropertyInfoControllerImp>(
-        builder: (controller) {
-          return Container(
-            padding: EdgeInsets.all(16),
-            color: Colors.white,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                controller.index == 2 ? NoticeBox() : SizedBox(height: 0),
-                Row(
-                  children: [
-                    MyCancelButton(
-                      onPressed: () {
-                        controller.navigateToPerviousPage();
-                      },
-                      title: "تراجع",
-                    ),
-                    SizedBox(width: 10),
-                    MyNextButton(
-                      onPressed: () {
-                        controller.navigateToNextPage();
-                      },
-                      title: controller.index == 2 ? "ارسال الطلب" : "التالي",
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+      backgroundColor: const Color(0xFFF8F9FB),
+      bottomNavigationBar: SafeArea(
+        child: GetBuilder<PropertyInfoControllerImp>(
+          builder: (controller) {
+            return Container(
+              padding: EdgeInsets.all(16),
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  controller.index == 2 ? NoticeBox() : SizedBox(height: 0),
+                  Row(
+                    children: [
+                      MyCancelButton(
+                        onPressed: () {
+                          controller.navigateToPerviousPage();
+                        },
+                        title: "تراجع",
+                      ),
+                      SizedBox(width: 10),
+                      MyNextButton(
+                        onPressed: () {
+                          controller.navigateToNextPage();
+                        },
+                        title: controller.index == 2 ? "ارسال الطلب" : "التالي",
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
@@ -105,6 +108,7 @@ class PropertyInfo extends StatelessWidget {
               child: PageView.builder(
                 controller: controller.pageController,
                 physics: NeverScrollableScrollPhysics(),
+                itemCount: controller.pages.length,
                 onPageChanged: (val) {
                   controller.changeValueOfIndex(val);
                 },

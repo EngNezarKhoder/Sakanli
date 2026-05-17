@@ -10,19 +10,13 @@ abstract class HomePageController extends GetxController {
 }
 
 class HomePageControllerImp extends HomePageController {
-  late int index;
-  late List<Widget> pages;
-  @override
-  void onInit() {
-    index = 0;
-    pages = [
-      AdsPage(),
-      MapPage(),
-      FavoritePage(),
-      SettingsPage()
-    ];
-    super.onInit();
-  }
+  int index = 0;
+  final List<Widget> pages = const [
+    AdsPage(),
+    MapPage(),
+    FavoritePage(),
+    SettingsPage(),
+  ];
 
   @override
   void changeIndexOnTap(int value) {

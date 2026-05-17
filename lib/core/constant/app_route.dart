@@ -12,8 +12,6 @@ class AppRoute {
   static const String mapPage = "/mapPage";
   static const String favoritePage = "/favoritePage";
   static const String settingsPage = "/settingsPage";
-  static const String where = "/where";
-  static const String service = "/service";
   static const String addProperty = "/addProperty";
   static const String advicePage = "/advicePage";
   static const String propertyInfo = "/propertyInfo";
@@ -23,4 +21,9 @@ class AppRoute {
   static const String mapScreen = "/mapScreen";
   static const String foundedResults = "/foundedResults";
   static const String propertyDetails = "/propertyDetails";
+  static const String myProperty = "/myProperty";
+  static const String myProfile = "/myProfile";
+  static const String privacyPage = "/privacyPage";
+  static const String conditionsPage = "/conditionsPage";
+  static const String faqPage = "/faqPage";
 }

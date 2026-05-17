@@ -9,7 +9,8 @@ class AllAdvicesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AdvicePageControllerImp controller = Get.put(AdvicePageControllerImp());
+    final AdvicePageControllerImp controller =
+        Get.find<AdvicePageControllerImp>();
     return Container(
       height: 2340,
       padding: const EdgeInsets.all(20),

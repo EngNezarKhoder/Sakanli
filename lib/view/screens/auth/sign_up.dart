@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/auth/sign_up_controller.dart';
@@ -20,7 +22,18 @@ class SignUp extends StatelessWidget {
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
-          alertExitApp();
+          alert(
+            title: 'مغادرة التطبيق',
+            content: 'هل أنت متأكد من رغبتك بمغادرة التطبيق ؟',
+            cancelButtonTitle: 'الغاء',
+            okButtonTitle: 'مغادرة التطبيق',
+            onPressedOk: () {
+              exit(0);
+            },
+            onPressedCancel: () {
+              Get.back();
+            },
+          );
         },
         child: SafeArea(
           child: Form(

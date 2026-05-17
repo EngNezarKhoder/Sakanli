@@ -5,21 +5,21 @@ class HomeAdGridWidget extends StatelessWidget {
   const HomeAdGridWidget({
     super.key,
     required this.imageName,
-    required this.city,
     required this.price,
-    required this.noMonth,
-    required this.caption,
     required this.iconName,
     required this.forWhat,
+    required this.onTapDetails,
+    required this.service,
+    required this.location,
   });
 
   final String imageName;
-  final String city;
   final String price;
-  final String noMonth;
-  final String caption;
   final String iconName;
   final String forWhat;
+  final String service;
+  final String location;
+  final void Function()? onTapDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -69,86 +69,66 @@ class HomeAdGridWidget extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Container(
-            height: 98,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(width: 1, color: AppColor.primaryColor),
-              color: AppColor.secondColor,
-            ),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "مكان الإقامة في",
-                      style: TextTheme.of(context).bodyMedium!.copyWith(
-                        color: AppColor.thirdColor,
-                        fontSize: 13,
+          InkWell(
+            onTap: onTapDetails,
+            child: Container(
+              height: 100,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(width: 1, color: AppColor.primaryColor),
+                color: AppColor.secondColor,
+              ),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "$price USD",
+                        style: TextTheme.of(context).bodyMedium!.copyWith(
+                          color: AppColor.thirdColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      city,
-                      style: TextTheme.of(context).bodyMedium!.copyWith(
-                        color: AppColor.thirdColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      price,
-                      style: TextTheme.of(context).bodyMedium!.copyWith(
-                        color: AppColor.thirdColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                    Text(
-                      " لمدة",
-                      style: TextTheme.of(context).bodyMedium!.copyWith(
-                        color: AppColor.thirdColor,
-                        fontSize: 13,
-                      ),
-                    ),
-                    Text(
-                      " $noMonth شهر",
-                      style: TextTheme.of(context).bodyMedium!.copyWith(
-                        color: AppColor.thirdColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  caption,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextTheme.of(context).bodyMedium!.copyWith(
-                    color: AppColor.thirdColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    ],
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    "المزيد ...",
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.home, color: AppColor.thirdColor, size: 20),
+                      const SizedBox(width: 5),
+                      Text(
+                        service,
+                        style: TextTheme.of(context).bodySmall!.copyWith(
+                          color: AppColor.thirdColor,
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: AppColor.thirdColor,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        location,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextTheme.of(context).bodySmall!.copyWith(
+                          color: AppColor.thirdColor,
+                          fontWeight: FontWeight.w200,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

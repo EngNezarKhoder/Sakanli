@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:sakanle/controller/home/map/map_screen_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/view/widgets/home/map/my_confirm_location_button.dart';
@@ -12,7 +11,8 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MapScreenControllerImp controller = Get.put(MapScreenControllerImp());
+    MapScreenControllerImp controller = Get.find<MapScreenControllerImp>();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -26,64 +26,86 @@ class MapScreen extends StatelessWidget {
               )
             : Stack(
                 children: [
-                  FlutterMap(
-                    mapController: controller.mapController,
-                    options: MapOptions(
-                      onMapReady: () {
-                        controller.isMapReady.value = true;
-                        controller.moveToCurrentIfReady();
-                      },
-                      initialCenter: controller.currentCenter.value!,
-                      initialZoom: 16,
-                      onPositionChanged: (MapCamera position, bool hasGesture) {
-                        LatLng center = position.center;
-                        controller.lat.value = center.latitude;
-                        controller.lng.value = center.longitude;
-                        controller.getAddressFromLatLng(
-                          controller.lat.value,
-                          controller.lng.value,
-                        );
-                      },
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                        userAgentPackageName: 'com.nezar.sakanli',
-                        subdomains: ['a', 'b', 'c'],
-                      ),
-                    ],
-                  ),
-                  Center(
-                    child: Icon(
-                      Icons.location_pin,
-                      size: 50,
-                      color: AppColor.primaryColor,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 100,
-                    left: 20,
-                    right: 20,
-                    child: MyInfoLocation(
-                      lat: controller.lat.value.toStringAsFixed(6),
-                      lng: controller.lng.value.toStringAsFixed(6),
-                      address: controller.address.value,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    right: 20,
-                    child: MyConfirmLocationButton(
-                      onTap: () {
-                        controller.confirmLocation();
-                      },
-                    ),
-                  ),
+                  _buildMap(controller),
+                  _buildPin(controller),
+                  _buildInfo(controller),
+                  _buildButton(controller),
                 ],
               ),
       ),
     );
   }
+}
+
+Widget _buildMap(MapScreenControllerImp controller) {
+  return FlutterMap(
+    mapController: controller.mapController,
+    options: MapOptions(
+      onMapReady: () {
+        controller.isMapReady.value = true;
+        controller.moveToCurrentIfReady();
+      },
+      initialCenter: controller.currentCenter.value!,
+      initialZoom: 16,
+      onPositionChanged: (position, hasGesture) {
+        controller.onMapMoved(position.center);
+      },
+    ),
+    children: [
+      TileLayer(
+        urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        userAgentPackageName: 'com.nezar.sakanli',
+      ),
+    ],
+  );
+}
+
+Widget _buildPin(MapScreenControllerImp controller) {
+  return Obx(
+    () => Center(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+
+        transform: Matrix4.translationValues(
+          0,
+          controller.isMoving.value ? -15 : 0,
+          0,
+        ),
+
+        child: Icon(
+          Icons.location_pin,
+          size: controller.isMoving.value ? 55 : 50,
+          color: AppColor.primaryColor,
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildInfo(MapScreenControllerImp controller) {
+  return Obx(
+    () => Positioned(
+      bottom: 100,
+      left: 20,
+      right: 20,
+      child: MyInfoLocation(
+        lat: controller.lat.value.toStringAsFixed(6),
+        lng: controller.lng.value.toStringAsFixed(6),
+        address: controller.address.value,
+      ),
+    ),
+  );
+}
+
+Widget _buildButton(MapScreenControllerImp controller) {
+  return Positioned(
+    bottom: 20,
+    left: 20,
+    right: 20,
+    child: MyConfirmLocationButton(
+      onTap: () {
+        controller.confirmLocation();
+      },
+    ),
+  );
 }

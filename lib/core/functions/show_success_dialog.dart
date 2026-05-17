@@ -61,8 +61,10 @@ void showSuccessDialog() {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Get.offAllNamed(AppRoute.login);
+                onPressed: () async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  await Future.delayed(const Duration(milliseconds: 100));
+                  Get.until((route) => route.settings.name == AppRoute.login);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF8A00),

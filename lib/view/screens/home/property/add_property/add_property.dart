@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/property/add_property_controller.dart';
-import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
 import 'package:sakanle/view/widgets/auth/my_custom_button_auth.dart';
 import 'package:sakanle/view/widgets/home/property/add_property_widgets/add_property_widget.dart';
@@ -12,14 +11,14 @@ class AddProperty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AddPropertyControllerImp controller = Get.put(AddPropertyControllerImp());
+    AddPropertyControllerImp controller = Get.find<AddPropertyControllerImp>();
     return Scaffold(
-      backgroundColor: AppColor.whiteColor,
+      backgroundColor: const Color(0xFFF8F9FB),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: ListView(
+        child: Column(
           children: [
-            Image.asset(AppImageAssets.appLogo, width: 200, height: 200),
+            Image.asset(AppImageAssets.logoImage, width: 200, height: 200),
             Center(
               child: Text(
                 "عقارك معنا بأمان",
@@ -42,12 +41,15 @@ class AddProperty extends StatelessWidget {
               },
             ),
             const SizedBox(height: 20),
-            MyCustomButtonAuth(
-              onPressed: () {
-                controller.navigateToAddPropertyInfo();
-              },
-              title: "إنشاء طلب",
-              isLogin: true,
+            SizedBox(
+              width: double.infinity,
+              child: MyCustomButtonAuth(
+                onPressed: () {
+                  controller.navigateToAddPropertyInfo();
+                },
+                title: "إنشاء طلب",
+                isLogin: true,
+              ),
             ),
           ],
         ),

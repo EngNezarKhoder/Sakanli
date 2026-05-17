@@ -14,6 +14,6 @@ class AddPropertyControllerImp extends AddPropertyController {
 
   @override
   void navigateToAddPropertyInfo() {
-    Get.toNamed(AppRoute.propertyInfo);
+    Get.offNamed(AppRoute.propertyInfo);
   }
 }

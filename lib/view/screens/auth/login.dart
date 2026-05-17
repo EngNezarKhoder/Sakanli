@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get.dart';
 import 'package:sakanle/controller/auth/login_controller.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
 import 'package:sakanle/core/functions/alert_exit_app.dart';
@@ -12,16 +14,28 @@ import 'package:sakanle/view/widgets/auth/my_text_form_auth.dart';
 import 'package:sakanle/view/widgets/auth/navigate_to_sign_up_or_login.dart';
 import 'package:sakanle/view/widgets/auth/remember_me_and_forget_password_widget.dart';
 
-class Login extends GetView<LoginControllerImp> {
+class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final LoginControllerImp controller = Get.find<LoginControllerImp>();
     return Scaffold(
       body: PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, result) {
-          alertExitApp();
+          alert(
+            title: 'مغادرة التطبيق',
+            content: 'هل أنت متأكد من رغبتك بمغادرة التطبيق ؟',
+            cancelButtonTitle: 'الغاء',
+            okButtonTitle: 'مغادرة التطبيق',
+            onPressedOk: () {
+              exit(0);
+            },
+            onPressedCancel: () {
+              Get.back();
+            },
+          );
         },
         child: SafeArea(
           child: Form(

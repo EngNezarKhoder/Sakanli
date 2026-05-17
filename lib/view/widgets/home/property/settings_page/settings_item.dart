@@ -58,7 +58,7 @@ class SettingsItem extends StatelessWidget {
             const Icon(
               Icons.arrow_forward_ios_rounded,
               size: 18,
-              color: AppColor.greyColor,
+              color: AppColor.secondColor,
             ),
           ],
         ),

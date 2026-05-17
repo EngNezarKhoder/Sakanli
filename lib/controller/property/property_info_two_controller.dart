@@ -10,24 +10,26 @@ abstract class PropertyInfoTwoController extends GetxController {
   String validateFields();
   Future<bool> handleLocationPermission();
   void onTapAddLocation();
+  void onChangeFocus(bool value);
 }
 
 class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
   late List<String> cites;
-  late String selectedCity;
-  late TextEditingController locationArea;
-  late TextEditingController street;
-  late TextEditingController level;
-  late TextEditingController building;
-  late TextEditingController propertyId;
-  late GlobalKey<FormState> formState;
+  String? selectedCity;
+  final TextEditingController locationArea = TextEditingController();
+  final TextEditingController street = TextEditingController();
+  final TextEditingController floor = TextEditingController();
+  final TextEditingController building = TextEditingController();
+  final TextEditingController propertyNumber = TextEditingController();
+  final GlobalKey<FormState> formState = GlobalKey<FormState>();
   double lat = 0.0;
   double lng = 0.0;
   String address = "";
+  bool isFocusedCity = false;
+  final FocusNode cityFocusNode = FocusNode();
 
   @override
   void onInit() {
-    selectedCity = 'دمشق';
     cites = [
       'إدلب',
       'حماة',
@@ -43,12 +45,6 @@ class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
       'حلب',
       'طرطوس',
     ];
-    locationArea = TextEditingController();
-    street = TextEditingController();
-    level = TextEditingController();
-    building = TextEditingController();
-    propertyId = TextEditingController();
-    formState = GlobalKey<FormState>();
     super.onInit();
   }
 
@@ -100,5 +96,21 @@ class PropertyInfoTwoControllerImp extends PropertyInfoTwoController {
         update();
       }
     }
+  }
+
+  @override
+  void onChangeFocus(bool value) {
+    isFocusedCity = value;
+    update();
+  }
+
+  @override
+  void onClose() {
+    propertyNumber.dispose();
+    building.dispose();
+    floor.dispose();
+    street.dispose();
+    locationArea.dispose();
+    super.onClose();
   }
 }

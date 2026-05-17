@@ -10,35 +10,48 @@ class MyCustomDropDown extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.hintText,
+    required this.focusNode,
+    required this.isFocused,
   });
 
   final String title;
   final List<DropdownMenuItem<String>>? items;
-  final String value;
+  final String? value;
   final void Function(String?)? onChanged;
   final String hintText;
+
+  final FocusNode focusNode;
+  final bool isFocused;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RichTextWidget(title: hintText),
-        SizedBox(height: 8),
+        RichTextWidget(title: title),
+        const SizedBox(height: 8),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
             color: AppColor.thirdColor,
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.black, width: isFocused ? 1.5 : 1),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
+              focusNode: focusNode,
               value: value,
-              style: TextTheme.of(context).bodySmall!.copyWith(fontSize: 16),
               isExpanded: true,
-              icon: Icon(Icons.keyboard_arrow_down),
+              icon: const Icon(Icons.keyboard_arrow_down),
               items: items,
               onChanged: onChanged,
+              hint: Text(
+                hintText,
+                style: TextTheme.of(context).bodySmall!.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
           ),
         ),

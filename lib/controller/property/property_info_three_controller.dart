@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sakanle/core/functions/show_warning_dialog.dart';
+import 'package:sakanle/core/functions/alert_exit_app.dart';
+import 'package:sakanle/core/functions/show_error_message.dart';
 
 abstract class PropertyInfoThreeController extends GetxController {
   void uploadImageFromCamera();
@@ -11,24 +12,17 @@ abstract class PropertyInfoThreeController extends GetxController {
   void clearAllImages();
   void removeImage(int index);
   double getTotalSizeOfImagesByMB();
-  bool validateFields();
+  String validateFields();
+  void showWarningDeleteAllImages();
 }
 
 class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
-  late TextEditingController phoneCalls;
-  late TextEditingController phoneWhatsApp;
-  late GlobalKey<FormState> formState;
+  final TextEditingController phoneCalls = TextEditingController();
+  final TextEditingController phoneWhatsApp = TextEditingController();
+  final GlobalKey<FormState> formState = GlobalKey<FormState>();
   List<File> imageFiles = [];
   static const maxImages = 3;
   static const maxImageSize = 1 * 1024 * 1024;
-
-  @override
-  void onInit() {
-    formState = GlobalKey<FormState>();
-    phoneCalls = TextEditingController();
-    phoneWhatsApp = TextEditingController();
-    super.onInit();
-  }
 
   @override
   void uploadImageFromCamera() async {
@@ -38,19 +32,19 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
         source: ImageSource.camera,
       );
       if (imageFiles.length >= maxImages) {
-        showWarningDialog("تنبيه", "الحد الأقصى 3 صور فقط");
+        showErrorMessage('الحد الأقصى 3 صور فقط');
         return;
       }
       if (cameraFile != null) {
         if (File(cameraFile.path).lengthSync() > maxImageSize) {
-          showWarningDialog('تنبيه', 'لا يمكن رفع صورة حجمها اكبر من 1 ميغا');
+          showErrorMessage('لا يمكن رفع صورة حجمها اكبر من 1 ميغا');
           return;
         }
         imageFiles.add(File(cameraFile.path));
         update();
       }
     } catch (e) {
-      //
+      showErrorMessage('حدث خطأ أثناء رفع الصورة');
     }
   }
 
@@ -61,13 +55,13 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
     if (galleryFiles.isEmpty) return;
     for (var file in galleryFiles) {
       if (File(file.path).lengthSync() > maxImageSize) {
-        showWarningDialog('تنبيه', 'لا يمكن رفع صورة أكبر من 1 ميغا');
+        showErrorMessage('لا يمكن رفع صورة أكبر من 1 ميغا');
         continue;
       }
       if (imageFiles.length < maxImages) {
         imageFiles.add(File(file.path));
       } else {
-        showWarningDialog("تنبيه", "الحد الأقصى 3 صور فقط");
+        showErrorMessage('الحد الأقصى 3 صور فقط');
         break;
       }
     }
@@ -96,10 +90,37 @@ class PropertyInfoThreeControllerImp extends PropertyInfoThreeController {
   }
 
   @override
-  bool validateFields() {
-    if (!formState.currentState!.validate() || imageFiles.isEmpty) {
-      return false;
+  String validateFields() {
+    if (imageFiles.isEmpty) {
+      return 'imageError';
     }
-    return true;
+    if (!formState.currentState!.validate() || imageFiles.isEmpty) {
+      return 'fieldsError';
+    }
+    return 'ok';
+  }
+
+  @override
+  void onClose() {
+    phoneWhatsApp.dispose();
+    phoneCalls.dispose();
+    super.onClose();
+  }
+
+  @override
+  void showWarningDeleteAllImages() {
+    alert(
+      title: 'حذف الصور',
+      content: 'هل أنت متأكد من رغبتك بحذف كل الصور ؟',
+      cancelButtonTitle: 'الغاء',
+      okButtonTitle: 'حذف الكل',
+      onPressedOk: () {
+        clearAllImages();
+        Get.back();
+      },
+      onPressedCancel: () {
+        Get.back();
+      },
+    );
   }
 }
