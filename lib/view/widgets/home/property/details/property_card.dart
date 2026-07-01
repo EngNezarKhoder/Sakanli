@@ -64,7 +64,7 @@ class PropertyCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              price,
+              "USD $price",
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

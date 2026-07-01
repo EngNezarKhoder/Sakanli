@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -42,8 +43,9 @@ class VerifiedCodeSignUp extends StatelessWidget {
               MaterialPinField(
                 length: 5,
                 onCompleted: (pin) {
-                  controller.navigateToHomePage();
+                  controller.verifyCode();
                 },
+                pinController: controller.pinInputController,
                 theme: MaterialPinTheme(
                   focusedBorderColor: AppColor.primaryColor,
                   fillColor: Color(0xFFFFF1DE),
@@ -59,12 +61,18 @@ class VerifiedCodeSignUp extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: MyCustomButtonAuth(
-                      onPressed: () {
-                        controller.navigateToHomePage();
+                    child: GetBuilder<VerifiedCodeSignUpControllerImp>(
+                      id: 'loadingCode',
+                      builder: (controller) {
+                        return MyCustomButtonAuth(
+                          onPressed: () {
+                            controller.verifyCode();
+                          },
+                          title: "التالي",
+                          isLogin: true,
+                          isLoading: controller.isLoadingCode,
+                        );
                       },
-                      title: "التالي",
-                      isLogin: true,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -80,7 +88,37 @@ class VerifiedCodeSignUp extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 30),
-              Center(child: Text("إعادة إرسال الرمز")),
+              GetBuilder<VerifiedCodeSignUpControllerImp>(
+                id: 'timer',
+                builder: (controller) {
+                  if (controller.isLoadingResendCode) {
+                    return CupertinoActivityIndicator(
+                      radius: 12,
+                      color: AppColor.secondColor,
+                    );
+                  }
+                  return Center(
+                    child: InkWell(
+                      onTap: controller.canResend
+                          ? () {
+                              controller.resendCode();
+                            }
+                          : null,
+                      child: Text(
+                        controller.canResend
+                            ? "إعادة إرسال الرمز"
+                            : "إعادة الإرسال خلال ${controller.seconds} ثانية",
+                        style: TextStyle(
+                          color: controller.canResend
+                              ? AppColor.primaryColor
+                              : Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

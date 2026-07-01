@@ -78,7 +78,7 @@ class Login extends StatelessWidget {
                         hintText: "كلمة المرور",
                         myController: controller.password,
                         validator: (val) {
-                          return validateInput(val!, 5, 100, "password");
+                          return validateInput(val!, 8, 100, "password");
                         },
                         obscure: controller.obscureText,
                         onPressed: () {
@@ -118,12 +118,18 @@ class Login extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  MyCustomButtonAuth(
-                    onPressed: () {
-                      controller.login();
+                  GetBuilder<LoginControllerImp>(
+                    id: 'loading',
+                    builder: (controller) {
+                      return MyCustomButtonAuth(
+                        onPressed: () {
+                          controller.login();
+                        },
+                        title: "تسجيل الدّخول",
+                        isLogin: true,
+                        isLoading: controller.isLoading,
+                      );
                     },
-                    title: "تسجيل الدّخول",
-                    isLogin: true,
                   ),
                   const SizedBox(height: 15),
                   NavigateToSignUpOrLogin(

@@ -13,7 +13,7 @@ class ImageContainer extends StatelessWidget {
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           child: Image.file(
             file,
             width: double.infinity,

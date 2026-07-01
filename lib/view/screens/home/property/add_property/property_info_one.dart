@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sakanle/controller/property/property_info_one_controller.dart';
+import 'package:sakanle/controller/property/property_info_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 import 'package:sakanle/core/functions/validate_input.dart';
 import 'package:sakanle/view/widgets/home/property/property_info_one/my_custom_drop_down.dart';
@@ -16,11 +16,11 @@ class PropertyInfoOne extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PropertyInfoOneControllerImp>();
+    final controller = Get.find<PropertyInfoControllerImp>();
 
     return Form(
-      key: controller.formState,
-      child: GetBuilder<PropertyInfoOneControllerImp>(
+      key: controller.formStatePageOne,
+      child: GetBuilder<PropertyInfoControllerImp>(
         builder: (controller) {
           return ListView(
             children: [

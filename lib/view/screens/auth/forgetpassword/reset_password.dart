@@ -47,7 +47,7 @@ class ResetPassword extends StatelessWidget {
                       hintText: "كلمة المرور",
                       myController: controller.password,
                       validator: (val) {
-                        return validateInput(val!, 5, 100, "password");
+                        return validateInput(val!, 8, 100, "password");
                       },
                       keyboardType: TextInputType.visiblePassword,
                       prefixImageName: AppImageAssets.passwordIcon,
@@ -68,7 +68,7 @@ class ResetPassword extends StatelessWidget {
                       hintText: "تأكيد كلمة المرور",
                       myController: controller.rePassword,
                       validator: (val) {
-                        return validateInput(val!, 5, 100, "password");
+                        return validateInput(val!, 8, 100, "password");
                       },
                       obscure: controller.obscureTextTwo,
                       keyboardType: TextInputType.visiblePassword,
@@ -83,12 +83,18 @@ class ResetPassword extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                MyCustomButtonAuth(
-                  onPressed: () {
-                    controller.resetPassword();
+                GetBuilder<ResetPasswordControllerImp>(
+                  id: 'loading',
+                  builder: (controller) {
+                    return MyCustomButtonAuth(
+                      onPressed: () {
+                        controller.resetPassword();
+                      },
+                      title: "إعادة تعيين",
+                      isLogin: true,
+                      isLoading: controller.isLoading,
+                    );
                   },
-                  title: "إعادة تعيين",
-                  isLogin: true,
                 ),
               ],
             ),

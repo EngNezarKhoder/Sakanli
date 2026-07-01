@@ -1,26 +1,33 @@
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong2/latlong.dart' as latlng;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sakanle/core/api/api_service.dart';
 import 'package:sakanle/core/constant/app_route.dart';
 import 'package:sakanle/core/functions/show_filter_map_sheet.dart';
 import 'package:sakanle/core/functions/show_message.dart';
 import 'package:sakanle/core/functions/show_open_location.dart';
+import 'package:sakanle/core/services/token_service.dart';
 
 abstract class MapPageController extends GetxController {
   void getCurrentCenter();
   void changeStatusOfCityButton(int index);
   void changeStatusOfSErviceButton(int index);
   void changeCurrentCenterAndZoom(String city);
-  void showResults();
+  Future<void> showResults();
   void changeOfSelectedService(String service);
   void navigateToAddProperty();
   void getCurrentLocation();
   Future<bool> handleLocationPermission();
   void showFilterSheet();
   void navigateToResultsPage();
+  void changeValueOfPrice(bool value);
+  void selectPropertyType(String type);
+  void selectPropertyNature(String item);
+  void onCancelFilter();
+  void onConfirmFilter();
+  void changePriceRange(double value);
 }
 
 class MapPageControllerImp extends MapPageController {
@@ -30,11 +37,25 @@ class MapPageControllerImp extends MapPageController {
   late List<bool> servicesStatus;
   late MapController mapController;
   RxDouble initialZoom = 0.0.obs;
-  late Rxn<LatLng> currentCenter = Rxn<LatLng>();
+  late Rxn<latlng.LatLng> currentCenter = Rxn<latlng.LatLng>();
   late List<Map<String, dynamic>> foundedResults;
   late String selectedCity;
   late String selectedService;
   bool filterEnabled = false;
+  bool isLoading = false;
+
+  // filter fields
+  RxBool priceEnabled = false.obs;
+  late List<String> propertyTypes;
+  late List<String> propertyNature;
+  RxDouble price = 0.0.obs;
+  RxString selectedType = ''.obs;
+  RxString selectedNature = ''.obs;
+
+  // API filter params
+  String? selectedPropertyType;
+  double? selectedPriceMin;
+  double? selectedPriceMax;
 
   @override
   void onInit() {
@@ -43,7 +64,7 @@ class MapPageControllerImp extends MapPageController {
     initialZoom.value = 6.26;
     foundedResults = [];
     selectedCity = "";
-    selectedService = "";
+    selectedService = "الكل";
     cites = [
       "إدلب",
       "حماة",
@@ -65,31 +86,47 @@ class MapPageControllerImp extends MapPageController {
       'للبيع',
       'للإيجار السنوي',
       'للإيجار - شهري',
-      'للإيجار - يومي',
+      'للإيجار - أسبوعي',
     ];
-    citesStatus = List.generate(cites.length, (status) => false);
-    servicesStatus = List.generate(services.length, (status) => false);
+    propertyTypes = [
+      'منزل',
+      'شقة',
+      'بناء',
+      'اسهم',
+      'اخرى',
+      'أرض',
+      'مكتب',
+      'محل تجاري',
+      'فيلا',
+      'مستودع',
+      'مطعم',
+      'مزرعة',
+      'عيادة',
+    ];
+    propertyNature = ['اخرى', 'حكم محكمة', 'طابو اخضر'];
+    citesStatus = List.generate(cites.length, (_) => false);
+    servicesStatus = List.generate(services.length, (_) => false);
     servicesStatus[0] = true;
     super.onInit();
   }
 
   @override
   void getCurrentCenter() async {
-    await Future.delayed(Duration(seconds: 5));
-    currentCenter.value = LatLng(35.8, 38.01);
+    await Future.delayed(const Duration(seconds: 5));
+    currentCenter.value = latlng.LatLng(35.8, 38.01);
     update(['map']);
   }
 
   @override
   void changeStatusOfCityButton(int index) {
-    citesStatus = List.generate(cites.length, (status) => false);
+    citesStatus = List.generate(cites.length, (_) => false);
     citesStatus[index] = true;
     update(['cities']);
   }
 
   @override
   void changeStatusOfSErviceButton(int index) {
-    servicesStatus = List.generate(services.length, (status) => false);
+    servicesStatus = List.generate(services.length, (_) => false);
     servicesStatus[index] = true;
     update(['services']);
   }
@@ -148,37 +185,75 @@ class MapPageControllerImp extends MapPageController {
     mapController.move(newCenter, 8);
   }
 
+  // ===== Filter Methods =====
+
   @override
-  void showResults() {
-    switch (selectedService) {
-      case 'الكل':
-        if (selectedCity != '')
-          foundedResults = [
-            {"name": "حمص"},
-          ];
-        break;
-      case 'للبيع':
-        if (selectedCity != '')
-          foundedResults = [
-            {"name": "حمص"},
-          ];
-        break;
-      case 'للإيجار السنوي':
-        if (selectedCity != '')
-          foundedResults = [
-            {"name": "حمص"},
-          ];
-        break;
-      case 'للإيجار - شهري':
-        if (selectedCity != '')
-          foundedResults = [
-            {"name": "حمص"},
-          ];
-        break;
-      case 'للإيجار - يومي':
-        if (selectedCity != '') foundedResults = [];
-        break;
+  void changeValueOfPrice(bool value) {
+    priceEnabled.value = value;
+  }
+
+  @override
+  void selectPropertyType(String item) {
+    selectedType.value = item;
+  }
+
+  @override
+  void selectPropertyNature(String item) {
+    selectedNature.value = item;
+  }
+
+  @override
+  void changePriceRange(double value) {
+    price.value = value;
+  }
+
+  // ===== Results =====
+
+  @override
+  Future<void> showResults() async {
+    if (selectedCity.isEmpty) {
+      foundedResults = [];
+      update(['results']);
+      return;
     }
+
+    isLoading = true;
+    update(['results']);
+
+    try {
+      final token = await TokenService.getToken();
+
+      if (token == null) {
+        foundedResults = [];
+        isLoading = false;
+        Get.snackbar('خطأ', 'يرجى تسجيل الدخول أولاً');
+        update(['results']);
+        return;
+      }
+
+      final result = await ApiService.mapProperties(
+        token: token,
+        city: selectedCity,
+        serviceType: convertData(selectedService),
+        ownershipType: selectedNature.value.isNotEmpty
+            ? selectedNature.value
+            : null,
+        propertyType: selectedPropertyType,
+        priceMin: selectedPriceMin,
+        priceMax: selectedPriceMax,
+      );
+
+      if (result != null && result['data'] != null) {
+        foundedResults = List<Map<String, dynamic>>.from(result['data']);
+      } else {
+        foundedResults = [];
+      }
+    } catch (e) {
+      print("SHOW RESULTS ERROR: $e");
+      foundedResults = [];
+    }
+
+    isLoading = false;
     update(['results']);
   }
 
@@ -187,10 +262,81 @@ class MapPageControllerImp extends MapPageController {
     selectedService = service;
   }
 
+  // ===== Filter Sheet =====
+
+  @override
+  void showFilterSheet() async {
+    selectedType.value = '';
+    selectedNature.value = '';
+    priceEnabled.value = false;
+    price.value = 0.0;
+
+    var result = await showFilterMapsBottomSheet();
+    if (result != null) {
+      filterEnabled = result['filterEnabled'] ?? false;
+      selectedPropertyType = result['property_type'];
+      selectedNature.value = result['property_nature'] ?? ''; 
+      selectedPriceMin = result['price_min'] != null
+          ? double.tryParse(result['price_min'].toString())
+          : null;
+      selectedPriceMax = result['price_max'] != null
+          ? double.tryParse(result['price_max'].toString())
+          : null;
+      update(['filter']);
+      showResults();
+    }
+  }
+
+  @override
+  void onCancelFilter() {
+    filterEnabled = false;
+    selectedPropertyType = null;
+    selectedPriceMin = null;
+    selectedPriceMax = null;
+    Get.back(result: {'filterEnabled': false});
+  }
+
+  @override
+  void onConfirmFilter() {
+    final hasFilter =
+        priceEnabled.value ||
+        selectedType.value.isNotEmpty ||
+        selectedNature.value.isNotEmpty;
+
+    Get.back(
+      result: {
+        'filterEnabled': hasFilter,
+        'property_type': selectedType.value.isNotEmpty
+            ? selectedType.value
+            : null,
+        'property_nature': selectedNature.value.isNotEmpty
+            ? selectedNature.value
+            : null,
+        'price_min': priceEnabled.value ? 0.0 : null,
+        'price_max': priceEnabled.value ? price.value : null,
+      },
+    );
+  }
+
+  // ===== Navigation =====
+
   @override
   void navigateToAddProperty() {
     Get.toNamed(AppRoute.addProperty);
   }
+
+  @override
+  void navigateToResultsPage() {
+    Get.toNamed(
+      AppRoute.foundedResults,
+      arguments: {
+        "city": selectedCity,
+        "service": selectedService,
+      },
+    );
+  }
+
+  // ===== Location =====
 
   @override
   Future<bool> handleLocationPermission() async {
@@ -199,9 +345,7 @@ class MapPageControllerImp extends MapPageController {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       showOpenLocation(
-        onPressedCancel: () {
-          Get.back();
-        },
+        onPressedCancel: () => Get.back(),
         onPressedConfirm: () async {
           Get.back();
           await Geolocator.openLocationSettings();
@@ -225,24 +369,18 @@ class MapPageControllerImp extends MapPageController {
     showMessage();
   }
 
-  @override
-  void showFilterSheet() async {
-    var result = await showFilterMapsBottomSheet();
-    if (result != null) {
-      filterEnabled = result['filterEnabled'];
-      update(['filter']);
+  String convertData(String itemData) {
+    switch (itemData) {
+      case 'للبيع':
+        return 'sale';
+      case 'للإيجار السنوي':
+        return 'yearly_rent';
+      case 'للإيجار - شهري':
+        return 'monthly_rent';
+      case 'للإيجار - أسبوعي':
+        return 'weekly_rent';
+      default:
+        return 'الكل';
     }
-  }
-
-  @override
-  void navigateToResultsPage() {
-    Get.toNamed(
-      AppRoute.foundedResults,
-      arguments: {
-        "city": selectedCity,
-        "service": selectedService,
-        "countOfPropertyFounded": foundedResults.length,
-      },
-    );
   }
 }

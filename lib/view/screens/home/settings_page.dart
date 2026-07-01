@@ -1,17 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sakanle/controller/home/settings_page_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
+import 'package:sakanle/core/constant/app_url.dart';
 import 'package:sakanle/view/widgets/home/property/settings_page/section_title.dart';
 import 'package:sakanle/view/widgets/home/property/settings_page/settings_item.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends GetView<SettingsPageControllerImp> {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final SettingsPageControllerImp controller =
-        Get.find<SettingsPageControllerImp>();
+    Get.lazyPut(() => SettingsPageControllerImp(), fenix: false);
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: AppBar(
@@ -59,65 +60,112 @@ class SettingsPage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              InkWell(
-                onTap: () {
-                  controller.navigateToProfilePage();
+              GetBuilder<SettingsPageControllerImp>(
+                id: 'profile',
+                builder: (controller) {
+                  if (controller.isLoadingProfile) {
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Center(
+                        child: CupertinoActivityIndicator(
+                          radius: 12,
+                          color: AppColor.secondColor,
+                        ),
+                      ),
+                    );
+                  }
+                  final user = controller.user;
+                  final profile = controller.profile;
+                  return InkWell(
+                    onTap: () {
+                      controller.navigateToProfilePage();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: AppColor.thirdColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child:
+                                profile?["image"] != null &&
+                                    profile!["image"].toString().isNotEmpty
+                                ? Image.network(
+                                    "${AppUrl.photoUrl}${profile["image"]}",
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) {
+                                      return Container(
+                                        color: AppColor.primaryColor,
+                                        child: const Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                          size: 35,
+                                        ),
+                                      );
+                                    },
+                                    loadingBuilder: (context, child, progress) {
+                                      if (progress == null) return child;
+                                      return const Center(
+                                        child: CupertinoActivityIndicator(
+                                          radius: 12,
+                                          color: AppColor.secondColor,
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(
+                                    color: AppColor.primaryColor,
+                                    child: const Icon(
+                                      Icons.person,
+                                      color: Colors.white,
+                                      size: 35,
+                                    ),
+                                  ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${user?['name']}",
+                                  style: TextTheme.of(
+                                    context,
+                                  ).bodySmall!.copyWith(fontSize: 22),
+                                ),
+                                SizedBox(height: 5),
+                                Text(
+                                  "${user?['phone']}",
+                                  style: TextStyle(color: AppColor.greyColor),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 18,
+                            color: AppColor.secondColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: AppColor.thirdColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          color: Colors.white,
-                          size: 35,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Nezar Khoder",
-                              style: TextTheme.of(
-                                context,
-                              ).bodySmall!.copyWith(fontSize: 22),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              "0991974223",
-                              style: TextStyle(color: AppColor.greyColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 18,
-                        color: AppColor.secondColor,
-                      ),
-                    ],
-                  ),
-                ),
               ),
               const SizedBox(height: 25),
               SectionTitle(title: "الضبط"),
@@ -136,45 +184,6 @@ class SettingsPage extends StatelessWidget {
                 onTap: () {
                   controller.callWhatsApp();
                 },
-              ),
-              const SizedBox(height: 20),
-              SectionTitle(title: "الإشعارات"),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 12,
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.notifications, color: AppColor.primaryColor),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "استلام إشعارات التطبيق",
-                            style: TextTheme.of(context).bodySmall!.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GetBuilder<SettingsPageControllerImp>(
-                      builder: (controller) {
-                        return Switch(
-                          value: controller.notificationIsEnabled,
-                          activeThumbColor: AppColor.primaryColor,
-                          onChanged: (value) {
-                            controller.onChangeValueOfNotification(value);
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
               ),
               const SizedBox(height: 20),
               SectionTitle(title: "الضبط"),
@@ -204,25 +213,37 @@ class SettingsPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               SectionTitle(title: 'تسجيل الخروج'),
-              SettingsItem(
-                icon: Icons.logout,
-                iconColor: AppColor.redColor,
-                titleColor: AppColor.redColor,
-                title: "تسجيل الخروج",
-                subtitle: "تسجيل الخروج من الحساب الحالي",
-                onTap: () {
-                  controller.signOut();
+              GetBuilder<SettingsPageControllerImp>(
+                id: 'loading',
+                builder: (controller) {
+                  return SettingsItem(
+                    icon: Icons.logout,
+                    iconColor: AppColor.redColor,
+                    titleColor: AppColor.redColor,
+                    title: "تسجيل الخروج",
+                    subtitle: "تسجيل الخروج من الحساب الحالي",
+                    onTap: () {
+                      controller.signOut();
+                    },
+                    isLoading: controller.isLoading,
+                  );
                 },
               ),
               SectionTitle(title: 'حذف الحساب'),
-              SettingsItem(
-                icon: Icons.delete,
-                iconColor: AppColor.redColor,
-                titleColor: AppColor.redColor,
-                title: "حذف الحساب نهائيا",
-                subtitle: "حذف الحساب وجميع البيانات المرتبطة به",
-                onTap: () {
-                  controller.deleteAccount();
+              GetBuilder<SettingsPageControllerImp>(
+                id: 'loadingDelete',
+                builder: (controller) {
+                  return SettingsItem(
+                    icon: Icons.delete,
+                    iconColor: AppColor.redColor,
+                    titleColor: AppColor.redColor,
+                    title: "حذف الحساب نهائيا",
+                    subtitle: "حذف الحساب وجميع البيانات المرتبطة به",
+                    onTap: () {
+                      controller.deleteAccount();
+                    },
+                    isLoading: controller.isLoading,
+                  );
                 },
               ),
               const SizedBox(height: 25),

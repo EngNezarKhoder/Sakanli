@@ -11,6 +11,8 @@ class HomeAdGridWidget extends StatelessWidget {
     required this.onTapDetails,
     required this.service,
     required this.location,
+    required this.city,
+    required this.onTapToggle,
   });
 
   final String imageName;
@@ -20,6 +22,8 @@ class HomeAdGridWidget extends StatelessWidget {
   final String service;
   final String location;
   final void Function()? onTapDetails;
+  final String city;
+  final void Function()? onTapToggle;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,10 @@ class HomeAdGridWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  imageName,
+                child: SizedBox(
+                  height: 180, // 👈 هون طول الصورة
                   width: double.infinity,
-                  fit: BoxFit.cover,
+                  child: Image.network(imageName, fit: BoxFit.cover),
                 ),
               ),
               Positioned(
@@ -60,9 +64,7 @@ class HomeAdGridWidget extends StatelessWidget {
                 top: 15,
                 right: 15,
                 child: GestureDetector(
-                  onTap: () {
-                    // toggle favorite
-                  },
+                  onTap: onTapToggle,
                   child: Image.asset(iconName),
                 ),
               ),
@@ -117,12 +119,23 @@ class HomeAdGridWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        location,
+                        city,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextTheme.of(context).bodySmall!.copyWith(
                           color: AppColor.thirdColor,
                           fontWeight: FontWeight.w200,
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        " - $location",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextTheme.of(context).bodySmall!.copyWith(
+                          color: AppColor.thirdColor,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12,
                         ),
                       ),
                     ],

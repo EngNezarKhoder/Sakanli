@@ -148,6 +148,18 @@ class OverlayLayer extends StatelessWidget {
         GetBuilder<MapPageControllerImp>(
           id: 'results',
           builder: (controller) {
+            if (controller.isLoading) {
+              return Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                  color: AppColor.primaryColor,
+                  minHeight: 3,
+                ),
+              );
+            }
             return controller.foundedResults.isEmpty
                 ? SizedBox()
                 : Positioned(

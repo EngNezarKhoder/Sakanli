@@ -18,6 +18,7 @@ class PropertyInfo extends StatelessWidget {
       backgroundColor: const Color(0xFFF8F9FB),
       bottomNavigationBar: SafeArea(
         child: GetBuilder<PropertyInfoControllerImp>(
+          id: 'isLoadingSend',
           builder: (controller) {
             return Container(
               padding: EdgeInsets.all(16),
@@ -36,6 +37,7 @@ class PropertyInfo extends StatelessWidget {
                       ),
                       SizedBox(width: 10),
                       MyNextButton(
+                        isLoading: controller.isLoadingSend,
                         onPressed: () {
                           controller.navigateToNextPage();
                         },

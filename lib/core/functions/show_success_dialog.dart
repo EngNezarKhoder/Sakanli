@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:sakanle/core/constant/app_route.dart';
 import 'package:sakanle/core/constant/image_assets.dart';
 
-void showSuccessDialog() {
+void showSuccessDialog(String content) {
   Get.dialog(
     Dialog(
       backgroundColor: Colors.transparent,
@@ -48,8 +48,8 @@ void showSuccessDialog() {
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
-              "تمت إعادة تعيين كلمة المرور بنجاح.\nيمكنك الآن تسجيل الدخول إلى حسابك.",
+            Text(
+              content,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -62,9 +62,10 @@ void showSuccessDialog() {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  await Future.delayed(const Duration(milliseconds: 100));
-                  Get.until((route) => route.settings.name == AppRoute.login);
+                  Get.back();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Get.offAllNamed(AppRoute.login);
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFF8A00),

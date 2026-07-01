@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 
@@ -10,6 +11,7 @@ class SettingsItem extends StatelessWidget {
     required this.icon,
     this.iconColor = AppColor.primaryColor,
     this.titleColor = AppColor.secondColor,
+    this.isLoading = false,
   });
   final void Function()? onTap;
   final String title;
@@ -17,6 +19,7 @@ class SettingsItem extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final Color titleColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +58,16 @@ class SettingsItem extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-              color: AppColor.secondColor,
-            ),
+            isLoading
+                ? CupertinoActivityIndicator(
+                    radius: 12,
+                    color: AppColor.secondColor,
+                  )
+                : const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 18,
+                    color: AppColor.secondColor,
+                  ),
           ],
         ),
       ),

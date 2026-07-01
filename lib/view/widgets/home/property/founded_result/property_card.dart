@@ -46,7 +46,7 @@ class PropertyCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 child: Stack(
                   children: [
-                    Image.asset(
+                    Image.network(
                       image,
                       width: 95,
                       height: 95,
@@ -86,7 +86,7 @@ class PropertyCard extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: price,
+                            text: "$price USD ",
                             style: TextStyle(
                               color: AppColor.primaryColor,
                               fontSize: 26,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sakanle/controller/home/filter/filter_map_controller.dart';
+import 'package:sakanle/controller/home/map_page_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 
 Future<dynamic> showFilterMapsBottomSheet() async {
-  FilterMapControllerImp controller = Get.put(FilterMapControllerImp());
+  MapPageControllerImp controller = Get.find<MapPageControllerImp>();
 
   return await Get.bottomSheet(
     Container(

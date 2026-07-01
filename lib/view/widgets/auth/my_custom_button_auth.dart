@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sakanle/core/constant/app_color.dart';
 
@@ -7,10 +8,12 @@ class MyCustomButtonAuth extends StatelessWidget {
     required this.onPressed,
     required this.title,
     required this.isLogin,
+    this.isLoading = false,
   });
   final void Function()? onPressed;
   final String title;
   final bool isLogin;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,17 @@ class MyCustomButtonAuth extends StatelessWidget {
               ),
       ),
       color: isLogin ? AppColor.primaryColor : AppColor.whiteColor,
-      child: Text(
-        title,
-        style: isLogin
-            ? TextTheme.of(
-                context,
-              ).titleLarge!.copyWith(color: AppColor.secondColor, fontSize: 24)
-            : TextTheme.of(context).titleLarge!.copyWith(fontSize: 24),
-      ),
+      child: isLoading!
+          ? CupertinoActivityIndicator(radius: 12, color: AppColor.secondColor)
+          : Text(
+              title,
+              style: isLogin
+                  ? TextTheme.of(context).titleLarge!.copyWith(
+                      color: AppColor.secondColor,
+                      fontSize: 24,
+                    )
+                  : TextTheme.of(context).titleLarge!.copyWith(fontSize: 24),
+            ),
     );
   }
 }

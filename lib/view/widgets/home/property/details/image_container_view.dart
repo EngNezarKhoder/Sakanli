@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sakanle/core/constant/app_color.dart';
 
 class ImageContainerView extends StatelessWidget {
   const ImageContainerView({super.key, required this.fileName});
@@ -7,20 +9,27 @@ class ImageContainerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 8,
-            color: Colors.black.withValues(alpha: 0.15),
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Image.asset(fileName, fit: BoxFit.cover),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image.network(
+        fileName,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: Colors.grey.shade200,
+            child: const Icon(Icons.broken_image),
+          );
+        },
+
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return const Center(
+            child: CupertinoActivityIndicator(
+              radius: 12,
+              color: AppColor.secondColor,
+            ),
+          );
+        },
       ),
     );
   }

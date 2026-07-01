@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sakanle/core/api/api_service.dart';
 import 'package:sakanle/core/functions/show_error_message.dart';
 import 'package:sakanle/core/functions/show_success_dialog.dart';
 
@@ -16,19 +17,38 @@ class ResetPasswordControllerImp extends ResetPasswordController {
   final GlobalKey<FormState> formState = GlobalKey<FormState>();
   bool obscureTextOne = true;
   bool obscureTextTwo = true;
+  bool isLoading = false;
+  late String email;
 
   @override
-  void onClose() {
-    password.dispose();
-    rePassword.dispose();
-    super.onClose();
+  void onInit() {
+    email = Get.arguments['email'];
+    super.onInit();
   }
 
+  
+
   @override
-  void resetPassword() {
+  void resetPassword() async {
     if (!validatePassword()) return;
     if (formState.currentState!.validate()) {
-      showSuccessDialog();
+      isLoading = true;
+      update(['loading']);
+      var response = await ApiService.resetPassword(
+        email,
+        password.text.trim(),
+        rePassword.text.trim(),
+      );
+      isLoading = false;
+      update(['loading']);
+      print(response);
+      if (response['status'] == 'done') {
+        showSuccessDialog(
+          'تمت إعادة تعيين كلمة المرور بنجاح.\nيمكنك الآن تسجيل الدخول إلى حسابك.',
+        );
+      } else {
+        showErrorMessage(response['message'] ?? "فشل إعادة تعيين كلمة المرور");
+      }
     }
   }
 
@@ -51,5 +71,12 @@ class ResetPasswordControllerImp extends ResetPasswordController {
       return false;
     }
     return true;
+  }
+
+  @override
+  void onClose() {
+    password.dispose();
+    rePassword.dispose();
+    super.onClose();
   }
 }

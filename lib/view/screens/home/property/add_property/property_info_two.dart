@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sakanle/controller/property/property_info_two_controller.dart';
+import 'package:sakanle/controller/property/property_info_controller.dart';
 import 'package:sakanle/core/functions/validate_input.dart';
 import 'package:sakanle/view/widgets/home/property/property_info_two/add_another_location.dart';
 import 'package:sakanle/view/widgets/home/property/property_info_two/add_location.dart';
@@ -13,15 +13,15 @@ class PropertyInfoTwo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PropertyInfoTwoControllerImp controller =
-        Get.find<PropertyInfoTwoControllerImp>();
+    final PropertyInfoControllerImp controller =
+        Get.find<PropertyInfoControllerImp>();
     return Form(
-      key: controller.formState,
+      key: controller.formStatePageTwo,
       child: ListView(
         children: [
           RichTextWidget(title: 'تحديد الموقع '),
           const SizedBox(height: 10),
-          GetBuilder<PropertyInfoTwoControllerImp>(
+          GetBuilder<PropertyInfoControllerImp>(
             builder: (controller) {
               return controller.lat == 0.0 && controller.lng == 0.0
                   ? AddLocation(
@@ -43,7 +43,7 @@ class PropertyInfoTwo extends StatelessWidget {
             style: TextTheme.of(context).bodySmall!.copyWith(fontSize: 20),
           ),
           const SizedBox(height: 10),
-          GetBuilder<PropertyInfoTwoControllerImp>(
+          GetBuilder<PropertyInfoControllerImp>(
             builder: (controller) {
               return Focus(
                 onFocusChange: (val) {},

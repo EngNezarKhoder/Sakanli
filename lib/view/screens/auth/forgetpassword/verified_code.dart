@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -7,7 +8,7 @@ import 'package:sakanle/view/widgets/auth/app_logo.dart';
 import 'package:sakanle/view/widgets/auth/app_title.dart';
 import 'package:sakanle/view/widgets/auth/my_custom_button_auth.dart';
 
-class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
+class VerifiedCode extends StatelessWidget {
   const VerifiedCode({super.key});
 
   @override
@@ -17,6 +18,7 @@ class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
     return Scaffold(
       body: SafeArea(
         child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           decoration: const BoxDecoration(
             gradient: RadialGradient(
               center: Alignment.topLeft,
@@ -28,7 +30,6 @@ class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
               ],
             ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
@@ -44,6 +45,7 @@ class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
                 onCompleted: (pin) {
                   controller.navigateToResetPassword();
                 },
+                pinController: controller.pinController,
                 theme: MaterialPinTheme(
                   focusedBorderColor: AppColor.primaryColor,
                   fillColor: Color(0xFFFFF1DE),
@@ -59,12 +61,18 @@ class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
               Row(
                 children: [
                   Expanded(
-                    child: MyCustomButtonAuth(
-                      onPressed: () {
-                        controller.navigateToResetPassword();
+                    child: GetBuilder<VerifiedCodeControllerImp>(
+                      id: 'loadingCode',
+                      builder: (controller) {
+                        return MyCustomButtonAuth(
+                          onPressed: () {
+                            controller.navigateToResetPassword();
+                          },
+                          title: "التالي",
+                          isLogin: true,
+                          isLoading: controller.isLoadingCode,
+                        );
                       },
-                      title: "التالي",
-                      isLogin: true,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -80,7 +88,37 @@ class VerifiedCode extends GetView<VerifiedCodeControllerImp> {
                 ],
               ),
               const SizedBox(height: 30),
-              Center(child: Text("إعادة إرسال الرمز")),
+              GetBuilder<VerifiedCodeControllerImp>(
+                id: 'timer',
+                builder: (controller) {
+                  if (controller.isLoadingReCode) {
+                    return CupertinoActivityIndicator(
+                      radius: 12,
+                      color: AppColor.secondColor,
+                    );
+                  }
+                  return Center(
+                    child: InkWell(
+                      onTap: controller.canResend
+                          ? () {
+                              controller.resendCode();
+                            }
+                          : null,
+                      child: Text(
+                        controller.canResend
+                            ? "إعادة إرسال الرمز"
+                            : "إعادة الإرسال خلال ${controller.seconds} ثانية",
+                        style: TextStyle(
+                          color: controller.canResend
+                              ? AppColor.primaryColor
+                              : Colors.grey,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

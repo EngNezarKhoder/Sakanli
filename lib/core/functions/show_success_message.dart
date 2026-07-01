@@ -1,48 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sakanle/core/constant/app_color.dart';
 
 void showSuccessMessage() {
   Get.snackbar(
-    "تم الإرسال",
-    "تم إرسال طلبك بنجاح، سيتم إعلامك بالنتيجة في أقرب وقت ممكن",
+    "",
+    "",
     snackPosition: SnackPosition.BOTTOM,
-    margin: EdgeInsets.all(16),
-    borderRadius: 12,
-    backgroundColor: Color(0xFF1E1E2C),
-    colorText: Colors.white,
-    duration: Duration(seconds: 4),
-    icon: Padding(
-      padding: EdgeInsets.only(right: 8),
-      child: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.green.withValues(alpha: 0.15),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(Icons.check, color: Colors.green, size: 26),
-      ),
-    ),
-    shouldIconPulse: false,
+    backgroundColor: Colors.white,
+    margin: const EdgeInsets.all(16),
+    borderRadius: 14,
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    duration: const Duration(seconds: 3),
+    isDismissible: true,
     boxShadows: [
       BoxShadow(
-        color: Colors.black.withValues(alpha: 0.2),
-        blurRadius: 10,
-        offset: Offset(0, 5),
+        color: Colors.black.withValues(alpha: 0.08),
+        blurRadius: 12,
+        offset: const Offset(0, 6),
       ),
     ],
-    titleText: Text(
-      "تم الإرسال",
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
+
+    /// Title
+    titleText: Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: AppColor.primaryColor.withValues(alpha: 0.15),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.check,
+            color: AppColor.primaryColor,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          "تم الإرسال",
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: AppColor.secondColor,
+            fontFamily: 'Cairo',
+          ),
+        ),
+      ],
     ),
-    messageText: Text(
-      "تم إرسال طلبك بنجاح، سيتم إعلامك بالنتيجة في أقرب وقت ممكن",
-      style: TextStyle(
-        fontSize: 14,
-        color: Colors.white.withValues(alpha: 0.8),
+
+    /// Message
+    messageText: Padding(
+      padding: const EdgeInsets.only(right: 36),
+      child: Text(
+        "تم إرسال طلبك بنجاح وسيتم إعلامك قريباً",
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.grey.shade600,
+          fontFamily: 'Cairo',
+        ),
       ),
     ),
   );

@@ -56,12 +56,18 @@ class VerifiedEmail extends GetView<VerifiedEmailControllerImp> {
                 Row(
                   children: [
                     Expanded(
-                      child: MyCustomButtonAuth(
-                        onPressed: () {
-                          controller.navigateToVerifiedCode();
+                      child: GetBuilder<VerifiedEmailControllerImp>(
+                        id: 'loading',
+                        builder: (controller) {
+                          return MyCustomButtonAuth(
+                            onPressed: () {
+                              controller.navigateToVerifiedCode();
+                            },
+                            title: "التالي",
+                            isLogin: true,
+                            isLoading: controller.isLoading,
+                          );
                         },
-                        title: "التالي",
-                        isLogin: true,
                       ),
                     ),
                     const SizedBox(width: 10),

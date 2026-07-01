@@ -69,7 +69,7 @@ class SignUp extends StatelessWidget {
                     hintText: "اسم المستخدم",
                     myController: controller.userName,
                     validator: (val) {
-                      return validateInput(val!, 5, 100, "username");
+                      return validateInput(val!, 2, 100, "username");
                     },
                     keyboardType: TextInputType.text,
                     prefixImageName: AppImageAssets.emailIcon,
@@ -89,7 +89,7 @@ class SignUp extends StatelessWidget {
                     hintText: "رقم الهاتف",
                     myController: controller.phone,
                     validator: (val) {
-                      return validateInput(val!, 5, 100, "phone");
+                      return validateInput(val!, 10, 100, "phone");
                     },
                     keyboardType: TextInputType.phone,
                     prefixImageName: AppImageAssets.phoneIcon,
@@ -101,7 +101,7 @@ class SignUp extends StatelessWidget {
                         hintText: "كلمة المرور",
                         myController: controller.password,
                         validator: (val) {
-                          return validateInput(val!, 5, 100, "password");
+                          return validateInput(val!, 8, 100, "password");
                         },
                         keyboardType: TextInputType.visiblePassword,
                         prefixImageName: AppImageAssets.passwordIcon,
@@ -127,12 +127,18 @@ class SignUp extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 15),
-                  MyCustomButtonAuth(
-                    onPressed: () {
-                      controller.signUp();
+                  GetBuilder<SignUpControllerImp>(
+                    id: 'loading',
+                    builder: (controller) {
+                      return MyCustomButtonAuth(
+                        onPressed: () {
+                          controller.signUp();
+                        },
+                        title: "إنشاء حساب",
+                        isLogin: true,
+                        isLoading: controller.isLoading,
+                      );
                     },
-                    title: "إنشاء حساب",
-                    isLogin: true,
                   ),
                   const SizedBox(height: 20),
                   NavigateToSignUpOrLogin(

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sakanle/controller/home/filter/filter_ads_controller.dart';
+import 'package:sakanle/controller/home/ads_page_controller.dart';
 import 'package:sakanle/core/constant/app_color.dart';
-import 'package:sakanle/core/functions/validate_input.dart';
-import 'package:sakanle/view/widgets/home/property/filter/my_custom_text_form_filter.dart';
 
 Future<dynamic> showFilterAdsBottomSheet() async {
-  final controller = Get.isRegistered<FilterAdsControllerImp>()
-      ? Get.find<FilterAdsControllerImp>()
-      : Get.put(FilterAdsControllerImp());
+  final controller = Get.find<AdsPageControllerImp>();
 
   return await Get.bottomSheet(
     Container(
@@ -46,22 +42,6 @@ Future<dynamic> showFilterAdsBottomSheet() async {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 25),
-              MyCustomTextFormFilter(
-                hintText: 'أدخل اسم المحافظة أو المدينة',
-                myController: controller.cityName,
-                validator: (val) {
-                  return validateInput(val ?? '', 3, 100, 'city');
-                },
-                keyboardType: TextInputType.text,
-                prefixIcon: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 7,
-                  ),
-                  child: const Icon(Icons.location_pin),
-                ),
-              ),
-              const SizedBox(height: 30),
               const Text(
                 'نوع العقار',
                 style: const TextStyle(
