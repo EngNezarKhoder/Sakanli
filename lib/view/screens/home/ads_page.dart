@@ -29,7 +29,12 @@ class AdsPage extends StatelessWidget {
               // ================= HEADER =================
               Row(
                 children: [
-                  Image.asset(AppImageAssets.profileIcon),
+                  InkWell(
+                    child: Image.asset(AppImageAssets.profileIcon),
+                    onTap: () {
+                      controller.navigateToProfilePage();
+                    },
+                  ),
                   const SizedBox(width: 10),
                   InkWell(
                     onTap: controller.navigateToAddProperty,

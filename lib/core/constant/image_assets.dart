@@ -27,4 +27,7 @@ class AppImageAssets {
   static const String roomTwoIcon = "$rootImages/room_two.png";
   static const String backIcon = "$rootImages/back.png";
   static const String favoriteFilledIcon = "$rootImages/favoriteFilledIcon.png";
+  static const String adsOutlinedIcon = "$rootImages/ads_out.png";
+  static const String settingsFilledIcon = "$rootImages/settings_fill.png";
+  static const String mapFilledIcon = "$rootImages/map_fill.png";
 }

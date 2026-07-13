@@ -40,28 +40,36 @@ class HomePage extends StatelessWidget {
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Image.asset(AppImageAssets.adsIcon),
+                      child: controller.index == 0
+                          ? Image.asset(AppImageAssets.adsIcon)
+                          : Image.asset(AppImageAssets.adsOutlinedIcon),
                     ),
                     label: "الإعلانات",
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Image.asset(AppImageAssets.mapIcon),
+                      child: controller.index == 1
+                          ? Image.asset(AppImageAssets.mapFilledIcon)
+                          : Image.asset(AppImageAssets.mapIcon),
                     ),
                     label: "الخريطة",
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Image.asset(AppImageAssets.favoriteIcon),
+                      child: controller.index == 2
+                          ? Image.asset(AppImageAssets.favoriteFilledIcon)
+                          : Image.asset(AppImageAssets.favoriteIcon),
                     ),
                     label: "المفضّلة",
                   ),
                   BottomNavigationBarItem(
                     icon: Padding(
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Image.asset(AppImageAssets.settingsIcon),
+                      child: controller.index == 3
+                          ? Image.asset(AppImageAssets.settingsFilledIcon)
+                          : Image.asset(AppImageAssets.settingsIcon),
                     ),
                     label: "الإعدادات",
                   ),

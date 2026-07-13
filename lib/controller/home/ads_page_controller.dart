@@ -16,6 +16,7 @@ abstract class AdsPageController extends GetxController {
   void selectPropertyNature(String item);
   void onCancelFilter();
   void onConfirmFilter();
+  void navigateToProfilePage();
 }
 
 class AdsPageControllerImp extends AdsPageController {
@@ -188,5 +189,10 @@ class AdsPageControllerImp extends AdsPageController {
     } catch (e) {
       print("TOGGLE FAVORITE ERROR: $e");
     }
+  }
+
+  @override
+  void navigateToProfilePage() {
+    Get.toNamed(AppRoute.myProfile);
   }
 }
